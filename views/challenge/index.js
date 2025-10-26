@@ -1,4 +1,4 @@
-const SERVER_URL = "http://localhost:5500/api/v1/challenges";
+const SERVER_URL = "/api/v1/challenges";
 
 function callbackAddGame(){
     const input = document.getElementById('new-game')
