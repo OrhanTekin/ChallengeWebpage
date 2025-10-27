@@ -1,5 +1,5 @@
 import express from 'express';
-import { PORT } from './config/env.js'
+import { PORT, SERVER_URL } from './config/env.js'
 
 import challengeRouter from './routes/challenge.routes.js';
 import connectToDatabase from './database/mongodb.js';
@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, async () => {
-  console.log(`Challenge API is running on ${PORT}`)
+  console.log(`Challenge API is running on ${SERVER_URL}:${PORT}`)
 
   await connectToDatabase() 
 });

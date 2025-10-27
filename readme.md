@@ -5,12 +5,17 @@ What I used:
 * nodemon
 * npx eslint --init
 * mongodb
-(* jsonwebtoken)
-(* bycryptjs)
-
-
 
 
 Start Server locally:
 npm run dev
+
+todo:
+(Bearbeite Local)
+1.input feld anpassen
+2.durchgeschrichene Linie
+3. effekte beim tooglen?
+4. Liste anpassen
+5.push in git
+6.In render -> Restart Service
 

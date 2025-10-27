@@ -8,14 +8,17 @@
     <link rel="stylesheet" href="/challenge/style.css">
   </head>
   <body onload="fetchGames()">
-    <h1>List of games</h1>
-    <ul id="game-list"></ul>
-   
-    <div class="button-wrap">
-        <input type="text" id="new-game" placeholder="Enter a new game...">
-        <button class="btn" onclick="callbackAddGame()">Add</button>
+    <h1>Games</h1>
+    <div class="container">
+        <ul id="game-list"></ul>
+      
+        <div class="button-wrap">
+            <input type="text" id="new-game" placeholder="Enter a new game...">
+            <button class="btn" onclick="callbackAddGame()">Add</button>
+        </div>
+        
+
     </div>
-    
     <script src="/challenge/index.js"></script>
   </body>
 </html> 
