@@ -19,6 +19,11 @@ todo:
 4. Liste anpassen
 5.push in git
 6.In render -> Restart Service
-
+7.Fix vulnerabilities?
+8. Win Counter and Reset 
+9.Lösch inhalt von schreibbar
 
 Back to home button 
+
+
+UptimeRobot Test ob Seite noch da ist

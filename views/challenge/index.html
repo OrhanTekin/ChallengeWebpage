@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Win Challenge</title>
     <link rel="stylesheet" href="/challenge/style.css">
+    <a class="btn home" href="/main/index.html">
+      <span class="arrow"></span>Home
+    </a>
   </head>
   <body onload="fetchGames()">
     <h1>Games</h1>
@@ -16,8 +19,6 @@
             <input type="text" id="new-game" placeholder="Enter a new game...">
             <button class="btn" onclick="callbackAddGame()">Add</button>
         </div>
-        
-
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/challenge/index.js"></script>
