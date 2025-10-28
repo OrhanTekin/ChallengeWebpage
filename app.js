@@ -27,7 +27,7 @@ app.use(cookieParser());
 
 //Serve static files like style.css + index.js
 app.use(express.static(path.join(__dirname, 'views')));
-app.use(express.static(path.join(__dirname, 'views/challenge')));
+
 
 //Routes registration (can be more))
 app.use('/api/v1/challenges', challengeRouter)
@@ -41,19 +41,11 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/views/main/index.html'));
 });
 
-app.listen(PORT, async () => {
+
+// START ONLY HTTP SERVER -> Live sync 
+httpServer.listen(PORT, async () => {
   console.log(`Challenge API is running on ${SERVER_URL}:${PORT}`)
-
-  await connectToDatabase() 
-});
-
-// WebSocket listeners
-io.on('connection', (socket) => {
-  console.log('Client connected ✔');
-
-  socket.on('disconnect', () => {
-    console.log('Client disconnected');
-  });
+  await connectToDatabase();
 });
 
 export default app;

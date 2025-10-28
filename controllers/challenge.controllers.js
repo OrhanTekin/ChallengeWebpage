@@ -44,7 +44,7 @@ export const addGame = async (req, res, next) => {
 
         // Notify all clients
         io.emit("refreshGames");
-        
+
         res.status(201).json({
             success: true,
             message: "Game created successfully",
@@ -89,6 +89,9 @@ export const updateGame = async (req, res, next) => {
         
         await session.commitTransaction();
         session.endSession();
+
+        // Notify all clients
+        io.emit("refreshGames");
         res.status(201).json({
             success: true,
             message: "Game updated successfully",
@@ -106,7 +109,6 @@ export const updateGame = async (req, res, next) => {
 };
 
 //Delete a game from the list 
-// TODO -> bugged
 export const deleteGame = async (req, res, next) => {
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -125,6 +127,8 @@ export const deleteGame = async (req, res, next) => {
     
         await session.commitTransaction();
         session.endSession();
+        // Notify all clients
+        io.emit("refreshGames");
         res.status(201).json({
             success: true,
             message: "Game deleted successfully",

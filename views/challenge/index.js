@@ -1,11 +1,7 @@
 const SERVER_URL = "/api/v1/challenges";
 
-
 const socket = io();
-
-socket.on("refreshGames", () => {
-    fetchGames();
-});
+socket.on('refreshGames', () => {fetchGames()});
 
 // Get all games from the database
 function fetchGames() {
