@@ -5,6 +5,7 @@ What I used:
 * nodemon
 * npx eslint --init
 * mongodb
+* socket.io
 
 
 Start Server locally:
@@ -19,3 +20,5 @@ todo:
 5.push in git
 6.In render -> Restart Service
 
+
+Back to home button 

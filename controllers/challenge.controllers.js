@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Game from "../models/game.model.js";
+import { io } from '../app.js';
 
 //Show the list of all games
 export const showList = async (req, res, next) => {
@@ -40,6 +41,10 @@ export const addGame = async (req, res, next) => {
         
         await session.commitTransaction();
         session.endSession();
+
+        // Notify all clients
+        io.emit("refreshGames");
+        
         res.status(201).json({
             success: true,
             message: "Game created successfully",

@@ -1,5 +1,12 @@
 const SERVER_URL = "/api/v1/challenges";
 
+
+const socket = io();
+
+socket.on("refreshGames", () => {
+    fetchGames();
+});
+
 // Get all games from the database
 function fetchGames() {
     fetch(`${SERVER_URL}/`, {
@@ -34,7 +41,8 @@ function callbackAddGame(){
     })
     .then(response => response.json())
     .then(() => {
-        fetchGames();
+        // fetchGames();
+
     })
     .catch((error) => {
         console.error('Error:', error);
@@ -102,22 +110,10 @@ function renderGames(currentGames) {
         }
 
         const deleteBtn = document.createElement("button");
-        // deleteBtn.textContent = "Delete"   
         deleteBtn.classList.add("btn");
         deleteBtn.classList.add("delete");
         deleteBtn.onclick = () => deleteGame(game._id);
-//         deleteBtn.innerHTML = `
-// <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" fill="currentColor">
-//   <g data-name="70-Trash">
-//     <path d="m29.89 6.55-1-2A1 1 0 0 0 28 4h-7V2a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v2H4a1 1 0 0 0-.89.55l-1 2A1 1 0 0 0 3 8h2v22a2 2 0 0 0 .47 1.41A2 2 0 0 0 7 32h18a2 2 0 0 0 2-2V8h2a1 1 0 0 0 .89-1.45zM13 2h6v2h-6zm12 28H7V8h18z"/>
-//     <path d="M17 26V10a2 2 0 0 0-2 2l.06 14H15v2a2 2 0 0 0 2-2zM22 26V10a2 2 0 0 0-2 2l.06 14H20v2a2 2 0 0 0 2-2zM12 26V10a2 2 0 0 0-2 2l.06 14H10v2a2 2 0 0 0 2-2z"/>
-//   </g>
-// </svg>
-// `;
-
             
-
-        //li.appendChild(checkbox)
         li.appendChild(label)
         li.appendChild(deleteBtn)
         list.appendChild(li)
