@@ -17,7 +17,8 @@
       
         <div class="button-wrap">
             <input type="text" id="new-game" placeholder="Enter a new game...">
-            <button class="btn" onclick="callbackAddGame()">Add</button>
+            <input type="number" id="needed-wins" placeholder="Enter the needed wins..." value="1">
+            <button class="btn add" onclick="callbackAddGame()"></button>
         </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>

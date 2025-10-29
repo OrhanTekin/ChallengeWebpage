@@ -12,7 +12,7 @@ function fetchGames() {
     .then(data => {
         let currentGames = [];
         data.data.games.forEach(game=>{
-            currentGames.push({_id: game._id, name:game.name, finished: game.finished})
+            currentGames.push({_id: game._id, name:game.name, finished: game.finished, currentStreak: game.currentStreak, neededWins: game.neededWins})
         })
         renderGames(currentGames);
     })
@@ -24,21 +24,25 @@ function fetchGames() {
 
 //Add game in the database
 function callbackAddGame(){
-    const input = document.getElementById('new-game')
-    const name = input.value.trim()
-    if (!name) return;
+    const inputGame = document.getElementById('new-game')
+    const name = inputGame.value.trim();
+
+    const inputWins = document.getElementById('needed-wins');
+    const wins = inputWins.value;
+    if(!name || !wins) return; //Name and wins müssen gesetzt werden
 
     fetch(`${SERVER_URL}/add-game`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({name:name, finished:false}),
+        body: JSON.stringify({name:name, finished:false, currentStreak: 0, neededWins: wins}),
     })
     .then(response => response.json())
     .then(() => {
-        // fetchGames();
-
+        // Clear the input after the game is added
+        inputGame.value = "";  
+        inputWins.value = 1;
     })
     .catch((error) => {
         console.error('Error:', error);
@@ -66,18 +70,19 @@ function deleteGame(pStrId){
     });
 }
 
-function toggleFinished(pGame){
+function setFinished(pGame, pFinishedValue){
     const name = pGame.name;
-    const oldFinishedValue = pGame.finished;
-    
-    const finishedValue = !oldFinishedValue;
+    updateGame({ name: name, finished: pFinishedValue});
 
+}
+
+function updateGame(pGame){
     fetch(`${SERVER_URL}/update-game`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({name: name, finished: finishedValue}),
+        body: JSON.stringify(pGame),
     })
     .then(response => response.json())
     .then(() => {
@@ -97,20 +102,46 @@ function renderGames(currentGames) {
     currentGames.forEach((game, idx) => {
         const li = document.createElement('li')
 
+        //Name of game
         const label = document.createElement('label')
-        label.textContent = game.name
-        label.onclick = () => toggleFinished(game);
+        const labelSpan = document.createElement('span'); //span needed for finished class 
+        labelSpan.textContent = game.name;
+        label.appendChild(labelSpan);
         // Durchgeschrichene Linie
         if (game.finished) {
-            label.classList.add("finished");
+            labelSpan.classList.add("finished");
         }
 
+        //Counter: Current value / maxValue
+        const winCounter = document.createElement("counter-label");
+        winCounter.classList.add("score");
+        winCounter.classList.add("btn");
+        winCounter.textContent = `${game.currentStreak} / ${game.neededWins}`;
+        winCounter.onclick = () => {
+            let newStreakValue;
+            if(game.currentStreak === game.neededWins){
+                //Reset
+                newStreakValue = 0;
+                setFinished(game, false);
+            }else{
+                //Increase by 1
+                newStreakValue = game.currentStreak + 1;
+                if(newStreakValue === game.neededWins){
+                    setFinished(game, true);
+                }
+            }
+            updateGame({ name: game.name, currentStreak: newStreakValue});
+        }
+
+
+        //Delete Button
         const deleteBtn = document.createElement("button");
         deleteBtn.classList.add("btn");
         deleteBtn.classList.add("delete");
         deleteBtn.onclick = () => deleteGame(game._id);
             
         li.appendChild(label)
+        li.appendChild(winCounter)
         li.appendChild(deleteBtn)
         list.appendChild(li)
     })

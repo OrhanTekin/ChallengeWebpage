@@ -6,24 +6,24 @@ What I used:
 * npx eslint --init
 * mongodb
 * socket.io
+* UptimeRobot to ping site all 5 min
 
 
 Start Server locally:
 npm run dev
 
-todo:
+todo Games List:
 (Bearbeite Local)
-1.input feld anpassen
-2.durchgeschrichene Linie
-3. effekte beim tooglen?
-4. Liste anpassen
-5.push in git
-6.In render -> Restart Service
-7.Fix vulnerabilities?
-8. Win Counter and Reset 
-9.Lösch inhalt von schreibbar
+
+- Liste anpassen
+- Meme Popups
+- Animation in den Namen? z.B. Bei Valorant die Wasserpistole
+- Name und Wins oben als Spalten-Beschreibung anzeigen
+- durchgeschrichene Linie -> vllt anderer Effekt?
+- Überschrift und ganze Seite schöner und interaktiver machen
 
 Back to home button 
 
 
-UptimeRobot Test ob Seite noch da ist
+todo home:
+1.Home Zeichen verbessern mit mehr Farben + Wind?

@@ -14,6 +14,20 @@ const gameSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+    currentStreak: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    neededWins: {
+        type: Number,
+        required: true,
+        validate: {
+            validator: function(v){
+                return v > 0;
+            }
+        }
     }
 }, {timestamps: true});
 
