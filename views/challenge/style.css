@@ -218,28 +218,6 @@ h1 {
   margin-top: 1rem;
 }
 
-/* Game list items */
-li {
-  margin: 10px 0;
-  padding: 15px 20px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 15px;  
-  position: relative;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  width: 100%;
-  max-width: 500px;
-}
-
-li:hover {
-  color: var(--primary-color);
-}
-
 /* Label for game name */
 label {
   flex-grow: 1;
@@ -289,3 +267,52 @@ input#needed-wins:focus {
   box-shadow: 0 0 25px var(--primary-color), inset 0 0 15px var(--primary-color);
 }
 
+
+
+/* table */
+#game-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#game-table th, #game-table td {
+  border: 2px solid white;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+#game-table th {
+  font-size: 2rem;
+  color: var(--primary-color);
+  text-shadow:
+    0 0 10px var(--primary-color),
+    0 0 20px var(--primary-color),
+    0 0 40px rgba(41, 206, 247, 0.6);
+  font-weight: 200;
+  animation: glowPulse 2.5s ease-in-out infinite alternate;
+}
+
+#game-table tr:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  box-shadow: 0 0 25px var(--primary-color), inset 0 0 15px var(--primary-color);
+
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(41, 206, 247, 0.3) 50%,
+    transparent 100%
+  );
+  transition: all 0.5s ease;
+}
+
+
+/* gif */
+.win-gif {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+  z-index: 9999;
+}

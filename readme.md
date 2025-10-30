@@ -15,10 +15,11 @@ npm run dev
 todo Games List:
 (Bearbeite Local)
 
+
 - Liste anpassen
+- Name und Wins oben als Spalten-Beschreibung anzeigen
 - Meme Popups
 - Animation in den Namen? z.B. Bei Valorant die Wasserpistole
-- Name und Wins oben als Spalten-Beschreibung anzeigen
 - durchgeschrichene Linie -> vllt anderer Effekt?
 - Überschrift und ganze Seite schöner und interaktiver machen
 

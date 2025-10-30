@@ -99,20 +99,23 @@ function renderGames(currentGames) {
     const list = document.getElementById('game-list')
     list.innerHTML = ''
 
-    currentGames.forEach((game, idx) => {
-        const li = document.createElement('li')
+    currentGames.forEach((game) => {
+        // const li = document.createElement('li')
+        const row = document.createElement('tr');
 
         //Name of game
-        const label = document.createElement('label')
+        // const label = document.createElement('label');
+        const labelCell = document.createElement('td');
         const labelSpan = document.createElement('span'); //span needed for finished class 
         labelSpan.textContent = game.name;
-        label.appendChild(labelSpan);
+        labelCell.appendChild(labelSpan);
         // Durchgeschrichene Linie
         if (game.finished) {
             labelSpan.classList.add("finished");
         }
 
         //Counter: Current value / maxValue
+        const counterCell = document.createElement('td');
         const winCounter = document.createElement("counter-label");
         winCounter.classList.add("score");
         winCounter.classList.add("btn");
@@ -128,21 +131,42 @@ function renderGames(currentGames) {
                 newStreakValue = game.currentStreak + 1;
                 if(newStreakValue === game.neededWins){
                     setFinished(game, true);
+                    showRandomWinGif();
                 }
             }
             updateGame({ name: game.name, currentStreak: newStreakValue});
         }
+        counterCell.appendChild(winCounter);
 
-
-        //Delete Button
+        //Delete Button          
+        const deleteCell = document.createElement('td');
         const deleteBtn = document.createElement("button");
-        deleteBtn.classList.add("btn");
-        deleteBtn.classList.add("delete");
+        deleteBtn.classList.add("btn", "delete");
         deleteBtn.onclick = () => deleteGame(game._id);
-            
-        li.appendChild(label)
-        li.appendChild(winCounter)
-        li.appendChild(deleteBtn)
-        list.appendChild(li)
+        deleteCell.appendChild(deleteBtn);
+
+        row.appendChild(labelCell);
+        row.appendChild(counterCell);
+        row.appendChild(deleteCell);
+        list.appendChild(row);
     })
+}
+
+
+
+//Gifs
+
+const gifMap = [
+    {name: "noice", src: "https://tenor.com/de/view/noice-nice-click-gif-8843762.gif"}
+]
+
+function showRandomWinGif() {
+    const gif = document.createElement("img");
+    gif.src = "https://tenor.com/de/view/noice-nice-click-gif-8843762.gif";
+    gif.alt = "You Win!";
+    gif.classList.add("win-gif");
+    document.body.appendChild(gif);
+
+    // Remove it after 3 seconds
+    setTimeout(() => gif.remove(), 3000);
 }

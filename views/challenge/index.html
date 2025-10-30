@@ -11,15 +11,32 @@
     </a>
   </head>
   <body onload="fetchGames()">
-    <h1>Games</h1>
+    <h1>Win Challenge</h1>
     <div class="container">
-        <ul id="game-list"></ul>
+        <!-- <ul id="game-list"></ul> -->
       
+        <table id="game-table">
+          <thead>
+            <tr>
+              <th>Game</th>
+              <th>Wins</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="game-list"></tbody>
+        </table>
         <div class="button-wrap">
             <input type="text" id="new-game" placeholder="Enter a new game...">
             <input type="number" id="needed-wins" placeholder="Enter the needed wins..." value="1">
             <button class="btn add" onclick="callbackAddGame()"></button>
         </div>
+
+
+        <div id="gif-drop" contenteditable="true" style="border:1px solid #ccc; min-height:100px;">
+          Paste your GIF here
+        </div>
+
+
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/challenge/index.js"></script>
