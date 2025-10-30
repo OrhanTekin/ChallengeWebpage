@@ -2,6 +2,9 @@ const SERVER_URL = "/api/v1/challenges";
 
 const socket = io();
 socket.on('refreshGames', () => {fetchGames()});
+socket.on('showWinGif', (data) => {
+    showWinGif(data.index);
+});
 
 // Get all games from the database
 function fetchGames() {
@@ -131,7 +134,9 @@ function renderGames(currentGames) {
                 newStreakValue = game.currentStreak + 1;
                 if(newStreakValue === game.neededWins){
                     setFinished(game, true);
-                    showRandomWinGif();
+
+                    const index = Math.floor(Math.random() * gifMap.length);
+                    socket.emit("showWinGif", { index });
                 }
             }
             updateGame({ name: game.name, currentStreak: newStreakValue});
@@ -155,18 +160,31 @@ function renderGames(currentGames) {
 
 
 //Gifs
-
 const gifMap = [
-    {name: "noice", src: "https://tenor.com/de/view/noice-nice-click-gif-8843762.gif"}
+    {name: "noice", src: "https://tenor.com/de/view/noice-nice-click-gif-8843762.gif", duration: 2000},
+    {name: "Doggers Win", src: "https://tenor.com/de/view/lightsaber-shohei-ohtani-50-50-club-home-run-major-league-baseball-gif-10321730214287179009.gif", duration:4000}
 ]
 
-function showRandomWinGif() {
-    const gif = document.createElement("img");
-    gif.src = "https://tenor.com/de/view/noice-nice-click-gif-8843762.gif";
-    gif.alt = "You Win!";
-    gif.classList.add("win-gif");
-    document.body.appendChild(gif);
+function showWinGif(pIndex) { 
+    const chosenGif = gifMap[pIndex];
 
-    // Remove it after 3 seconds
-    setTimeout(() => gif.remove(), 3000);
+    const gifOverlay = document.getElementById("gif-overlay");
+    const gif = document.getElementById("popup-gif");
+    gif.src = chosenGif.src;
+    gif.alt = chosenGif.name;
+    gifOverlay.style.display = "flex"; // show overlay
+
+    //Hide overlay after duration
+    setTimeout(() => {
+        gifOverlay.style.display = "none";
+        gif.src = "";
+    }, chosenGif.duration);
 }
+
+
+document.getElementById("gif-overlay").onclick = () => {
+    const overlay = document.getElementById("gif-overlay");
+    const gif = document.getElementById("popup-gif");
+    overlay.style.display = "none";
+    gif.src = "";
+};

@@ -308,11 +308,30 @@ input#needed-wins:focus {
 
 
 /* gif */
-.win-gif {
+.gif-overlay {
+  display: none; /* hidden by default */
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 1000px;
-  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4); /* semi-transparent dark background */
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.popup-gif {
+  max-width: 90vw;   /* don't exceed viewport width */
+  max-height: 80vh;  /* don't exceed viewport height */
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  animation: scaleIn 0.3s ease;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }

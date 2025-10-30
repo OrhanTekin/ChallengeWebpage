@@ -16,6 +16,7 @@ todo Games List:
 (Bearbeite Local)
 
 
+- Nutzer können gifs in die namen einfügen?
 - Liste anpassen
 - Name und Wins oben als Spalten-Beschreibung anzeigen
 - Meme Popups

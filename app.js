@@ -48,4 +48,11 @@ httpServer.listen(PORT, async () => {
   await connectToDatabase();
 });
 
+
+io.on("connection", (socket) => {
+  socket.on("showWinGif", (data) => {
+    io.emit("showWinGif", { index: data.index });
+  });
+});
+
 export default app;
