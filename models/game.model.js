@@ -10,6 +10,11 @@ const gameSchema = new mongoose.Schema({
         maxLength : 50,
         index: true
     },
+    gifLink: {
+        type: String,
+        trim: true,
+        maxLength : 500,
+    },
     finished: {
         type: Boolean,
         required: true,

@@ -244,8 +244,10 @@ label {
 
 /* Inputs: New game and Needed wins  */
 
-input#new-game,
-input#needed-wins {
+
+
+.input-text,
+.input-number {
   color: #faebd7;
   border: 2px solid #faebd7;
   padding: 0.5rem 1rem;
@@ -258,16 +260,18 @@ input#needed-wins {
 }
 
 /* Match hover/active states like .btn */
-input#new-game:hover,
-input#needed-wins:hover,
-input#new-game:focus,
-input#needed-wins:focus {
+.input-text:hover,
+.input-number:hover,
+.input-text:focus,
+.input-number:focus {
   border-color: var(--primary-color);
   color: var(--primary-color);
   box-shadow: 0 0 25px var(--primary-color), inset 0 0 15px var(--primary-color);
 }
 
-
+.input-number {
+  width: 150px;
+}
 
 /* table */
 #game-table {

@@ -15,7 +15,7 @@ function fetchGames() {
     .then(data => {
         let currentGames = [];
         data.data.games.forEach(game=>{
-            currentGames.push({_id: game._id, name:game.name, finished: game.finished, currentStreak: game.currentStreak, neededWins: game.neededWins})
+            currentGames.push({_id: game._id, name:game.name, gifLink: game.gifLink, finished: game.finished, currentStreak: game.currentStreak, neededWins: game.neededWins})
         })
         renderGames(currentGames);
     })
@@ -30,6 +30,14 @@ function callbackAddGame(){
     const inputGame = document.getElementById('new-game')
     const name = inputGame.value.trim();
 
+    const inputGif = document.getElementById('new-gif');
+    let gifInputValue = inputGif.value.trim();
+    if(gifInputValue !== ""){
+        if(!gifInputValue.endsWith(".gif")){
+            gifInputValue = `${gifInputValue}.gif`;
+        }
+    }
+
     const inputWins = document.getElementById('needed-wins');
     const wins = inputWins.value;
     if(!name || !wins) return; //Name and wins müssen gesetzt werden
@@ -39,12 +47,13 @@ function callbackAddGame(){
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({name:name, finished:false, currentStreak: 0, neededWins: wins}),
+        body: JSON.stringify({name:name, gifLink: gifInputValue, finished:false, currentStreak: 0, neededWins: wins}),
     })
     .then(response => response.json())
     .then(() => {
         // Clear the input after the game is added
-        inputGame.value = "";  
+        inputGame.value = "";
+        inputGif.value = "";  
         inputWins.value = 1;
     })
     .catch((error) => {
@@ -102,19 +111,37 @@ function renderGames(currentGames) {
     const list = document.getElementById('game-list')
     list.innerHTML = ''
 
+    //A row for each game
     currentGames.forEach((game) => {
-        // const li = document.createElement('li')
         const row = document.createElement('tr');
 
-        //Name of game
-        // const label = document.createElement('label');
+        //Label + gif cell
         const labelCell = document.createElement('td');
         const labelSpan = document.createElement('span'); //span needed for finished class 
         labelSpan.textContent = game.name;
-        labelCell.appendChild(labelSpan);
-        // Durchgeschrichene Linie
-        if (game.finished) {
-            labelSpan.classList.add("finished");
+        if (game.finished) labelSpan.classList.add("finished"); // Durchgeschrichene Linie
+
+        if (game.gifLink && game.gifLink.trim() !== "") {
+            // GIF
+            const container = document.createElement("div");
+            container.style.display = "flex";
+            container.style.flexDirection = "column";
+            container.style.alignItems = "center";
+
+            // Game label          
+            labelSpan.style.marginBottom = "5px"; // space between label and GIF
+            container.appendChild(labelSpan);
+
+            // GIF
+            const gifImg = document.createElement("img");
+            gifImg.src = game.gifLink;
+            gifImg.style.width = "200px";
+            gifImg.style.height = "200px";
+            container.appendChild(gifImg);
+            labelCell.appendChild(container);
+        } else {
+            //No gif
+            labelCell.appendChild(labelSpan);
         }
 
         //Counter: Current value / maxValue
@@ -162,7 +189,9 @@ function renderGames(currentGames) {
 //Gifs
 const gifMap = [
     {name: "noice", src: "https://tenor.com/de/view/noice-nice-click-gif-8843762.gif", duration: 2000},
-    {name: "Doggers Win", src: "https://tenor.com/de/view/lightsaber-shohei-ohtani-50-50-club-home-run-major-league-baseball-gif-10321730214287179009.gif", duration:4000}
+    {name: "Doggers Win", src: "https://tenor.com/de/view/lightsaber-shohei-ohtani-50-50-club-home-run-major-league-baseball-gif-10321730214287179009.gif", duration:4000},
+    {name: "Advantures1", src: "https://tenor.com/de/view/groovy-dancing-sombrero-mexican-hat-drunk-gif-17809378.gif", duration: 3000},
+    {name: "Faker", src: "https://tenor.com/de/view/faker-calling-faker-calling-faker-is-calling-goat-gif-84264726571740911.gif", duration:4000}
 ]
 
 function showWinGif(pIndex) { 

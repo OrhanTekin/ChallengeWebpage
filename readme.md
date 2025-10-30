@@ -15,16 +15,10 @@ npm run dev
 todo Games List:
 (Bearbeite Local)
 
-
-- Nutzer können gifs in die namen einfügen?
-- Liste anpassen
-- Name und Wins oben als Spalten-Beschreibung anzeigen
-- Meme Popups
-- Animation in den Namen? z.B. Bei Valorant die Wasserpistole
-- durchgeschrichene Linie -> vllt anderer Effekt?
 - Überschrift und ganze Seite schöner und interaktiver machen
-
-Back to home button 
+- Tabelle schöner machen
+- restliche Seite schöner machen
+-home button verbessern?
 
 
 todo home:
