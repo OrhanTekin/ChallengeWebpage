@@ -191,10 +191,15 @@ const gifMap = [
     {name: "noice", src: "https://tenor.com/de/view/noice-nice-click-gif-8843762.gif", duration: 2000},
     {name: "Doggers Win", src: "https://tenor.com/de/view/lightsaber-shohei-ohtani-50-50-club-home-run-major-league-baseball-gif-10321730214287179009.gif", duration:4000},
     {name: "Advantures1", src: "https://tenor.com/de/view/groovy-dancing-sombrero-mexican-hat-drunk-gif-17809378.gif", duration: 3000},
-    {name: "Faker", src: "https://tenor.com/de/view/faker-calling-faker-calling-faker-is-calling-goat-gif-84264726571740911.gif", duration:4000}
+    {name: "Faker", src: "https://tenor.com/de/view/faker-calling-faker-calling-faker-is-calling-goat-gif-84264726571740911.gif", duration:4000},
+    {name: "Dodgeball", src: "https://tenor.com/de/view/saquon-saquon-barkley-barkley-hurdle-saquon-barkley-philadelphia-eagles-gif-5902988451416277264.gif", duration: 10000}
 ]
 
-function showWinGif(pIndex) { 
+function showWinGif(pIndex) {
+    const isMuted = localStorage.getItem('isMuted') === 'true';
+    if(isMuted) return;
+
+    //play gif if they are not muted
     const chosenGif = gifMap[pIndex];
 
     const gifOverlay = document.getElementById("gif-overlay");
@@ -217,3 +222,24 @@ document.getElementById("gif-overlay").onclick = () => {
     overlay.style.display = "none";
     gif.src = "";
 };
+
+
+// Load Mute Settings
+function loadSettings(){
+    const isMuted = localStorage.getItem('isMuted') === 'true';
+    const button = document.getElementById('muteBtn');
+    
+    if (isMuted) {
+        button.classList.add('muted');
+    } else {
+        button.classList.remove('muted');
+    }
+}
+
+//Mute gif popups when toggled 
+function toggleMute() {
+    const button = document.getElementById('muteBtn');
+    const isMuted = button.classList.toggle('muted');
+
+    localStorage.setItem('isMuted', isMuted);
+}

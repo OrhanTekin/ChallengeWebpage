@@ -10,11 +10,9 @@
       <span class="arrow"></span>Home
     </a>
   </head>
-  <body onload="fetchGames()">
+  <body onload="fetchGames(); loadSettings()">
     <h1>Win Challenge</h1>
     <div class="container">
-        <!-- <ul id="game-list"></ul> -->
-      
         <table id="game-table">
           <thead>
             <tr>
@@ -36,6 +34,8 @@
           <img id="popup-gif" class="popup-gif" src="" alt="Win GIF">
         </div>
     </div>
+    <button id="muteBtn" class="btn mute" onclick="toggleMute()">GIF popups</button>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="/challenge/index.js"></script>
   </body>
