@@ -6,12 +6,23 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Win Challenge</title>
     <link rel="stylesheet" href="/challenge/style.css">
-    <a class="btn home" href="/main/index.html">
-      <span class="arrow"></span>Home
-    </a>
+    <div class="left-menu-bar">
+      <a class="btn home" href="/main/index.html">
+        <span class="arrow"></span>Home
+      </a>
+      <!-- <div class="features">
+        <div class="feature-card">Win back to back to complete a game</div>
+        <div class="feature-card">Reset a game on a lose</div>
+        <div class="feature-card">Just Win</div>
+      </div> -->
+    </div>
+
   </head>
   <body onload="fetchGames(); loadSettings()">
     <h1>Win Challenge</h1>
+    <div class="neon-divider"></div>
+    <h2 class="subheader">Somebody has to do it</h2>
+    <div class="neon-divider"></div>
     <div class="container">
         <table id="game-table">
           <thead>
@@ -29,11 +40,11 @@
             <input type="number" class="input-number" id="needed-wins" placeholder="Enter the needed wins..." value="1">
             <button class="btn add" onclick="callbackAddGame()"></button>
         </div>
-
         <div id="gif-overlay" class="gif-overlay">
           <img id="popup-gif" class="popup-gif" src="" alt="Win GIF">
         </div>
     </div>
+    <div class="neon-divider"></div>
     <button id="muteBtn" class="btn mute" onclick="toggleMute()">GIF popups</button>
 
     <script src="/socket.io/socket.io.js"></script>

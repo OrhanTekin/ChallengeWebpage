@@ -16,10 +16,8 @@ todo Games List:
 (Bearbeite Local)
 
 - Überschrift und ganze Seite schöner und interaktiver machen
-- Tabelle schöner machen
 - restliche Seite schöner machen
-- home button verbessern?
-- pop up toggle 
+
 
 todo home:
 1.Home Zeichen verbessern mit mehr Farben + Wind?
