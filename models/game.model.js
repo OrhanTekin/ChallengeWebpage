@@ -1,11 +1,15 @@
 import mongoose from "mongoose";
 
 const gameSchema = new mongoose.Schema({
+    listId: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'List', 
+        required: true 
+    },
     name: {
         type: String,
         required: [true, "Game Name is required"],
         trim: true,
-        unique: true,
         minLength : 1,
         maxLength : 50,
         index: true
@@ -33,13 +37,40 @@ const gameSchema = new mongoose.Schema({
                 return v > 0;
             }
         }
-    }
+    },
+    failCount:{
+        type:Number,
+        required: true,
+        default: 0,     
+    },
+    tries: [
+        {
+            attempt: {
+                type: Number,
+                required: true
+            },
+            streak: {
+                type: Number,
+                required: true,
+            },
+            result: {
+                type: String,
+                enum: ["Completed", "Failed"],
+                required: true
+            },
+            failureReason: {
+                type: String,
+                trim: true,
+                minLength : 1,
+                maxLength : 50,
+            }
+        }
+    ]
+
 }, {timestamps: true});
+
+gameSchema.index({ listId: 1, name: 1 }, { unique: true });
 
 const Game = mongoose.model("Game", gameSchema);
 
 export default Game;
-
-
-
-//{"success":true,"message":"Game created successfully","data":{"game":{"name":"League Of Legends","finished":true,"_id":"68fd27a931a8549037b822c8","createdAt":"2025-10-25T19:40:25.520Z","updatedAt":"2025-10-25T19:40:25.520Z","__v":0}}}

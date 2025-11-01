@@ -5,7 +5,8 @@ import { io } from '../app.js';
 //Show the list of all games
 export const showList = async (req, res, next) => {
     try {
-        const gameList = await Game.find();
+        const { listId } = req.params;
+        const gameList = await Game.find({listId});
         res.status(200).json({
             success: true,
             message: "GET game list",
@@ -24,11 +25,11 @@ export const addGame = async (req, res, next) => {
     session.startTransaction();
 
     try {
-        //Create a game
+        //Create a game in the correct list
         const {name, gifLink, finished, neededWins} = req.body;
-
+        const { listId } = req.params;
         //Check if game already exists
-        const gameExists = await Game.findOne({name});
+        const gameExists = await Game.findOne({name, listId });
 
         if(gameExists){
             const error = new Error("Game already exists");
@@ -37,7 +38,7 @@ export const addGame = async (req, res, next) => {
         }
 
         //Actual creation
-        const newGames = await Game.create([{name, gifLink, finished, neededWins}], {session});  //newGames[0]: weil man mehrere gleichzeitig erstellen kann
+        const newGames = await Game.create([{name, gifLink, finished, neededWins, listId}], {session});  //newGames[0]: weil man mehrere gleichzeitig erstellen kann
         
         await session.commitTransaction();
         session.endSession();
@@ -68,11 +69,12 @@ export const updateGame = async (req, res, next) => {
 
     try {
         //Update a game
-        const {name, gifLink, finished, currentStreak} = req.body;
+        const {name, gifLink, finished, currentStreak, failCount, tries} = req.body;
+        const { listId } = req.params;
 
         const updatedGame = await Game.findOneAndUpdate(
-            {name}, //Find game with name (unique)
-            {name, gifLink, finished, currentStreak}, 
+            {name, listId}, //Find game with name (unique)
+            {name, gifLink, finished, currentStreak, failCount, tries, listId}, 
             { 
                 new: true,        // return updated document
                 runValidators: true // validate against schema
@@ -116,8 +118,9 @@ export const deleteGame = async (req, res, next) => {
     try {
         //Delete a game
         const { _id } = req.body;
+        const { listId } = req.params;
 
-        const deletedGame = await Game.findOneAndDelete({ _id });
+        const deletedGame = await Game.findOneAndDelete({ _id, listId});
 
         if(!deletedGame){
             const error = new Error("Couldn't delete. Game does not exist");
@@ -134,6 +137,39 @@ export const deleteGame = async (req, res, next) => {
             message: "Game deleted successfully",
             data: {
                 game: deletedGame
+            }
+        });
+        
+
+    } catch (error) {
+        await session.abortTransaction();
+        session.endSession();
+        console.log(error);
+        next(error);
+    }
+};
+
+
+//Deletes all games with a certain list id
+export const deleteGamesOfListId = async (req, res, next) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+        //Delete a game
+        const { listId } = req.params;
+
+        const deletedGames = await Game.deleteMany({listId});
+    
+        await session.commitTransaction();
+        session.endSession();
+        // Notify all clients
+        io.emit("refreshGames");
+        res.status(201).json({
+            success: true,
+            message: `Deleted ${deletedGames.deletedCount} game(s) successfully.`,
+            data: {
+                game: deletedGames
             }
         });
         

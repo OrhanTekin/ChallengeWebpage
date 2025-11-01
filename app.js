@@ -1,6 +1,7 @@
 import express from 'express';
 import { PORT, SERVER_URL } from './config/env.js'
 
+import listRouter from './routes/list.routes.js';
 import challengeRouter from './routes/challenge.routes.js';
 import connectToDatabase from './database/mongodb.js';
 import errorMiddleware from './middlewares/error.middleware.js';
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'views')));
 
 
 //Routes registration (can be more))
+app.use('/api/v1/', listRouter)
 app.use('/api/v1/challenges', challengeRouter)
 
 //Custom Middleware registration (can be more)

@@ -8,14 +8,23 @@ socket.on('showWinGif', (data) => {
 
 // Get all games from the database
 function fetchGames() {
-    fetch(`${SERVER_URL}/`, {
+    //Get games with matching list id
+    const params = new URLSearchParams(window.location.search);
+    const listId = params.get("id");
+
+    fetch(`${SERVER_URL}/${listId}`, {
         method: 'GET',
     })
     .then(response => response.json())
     .then(data => {
         let currentGames = [];
         data.data.games.forEach(game=>{
-            currentGames.push({_id: game._id, name:game.name, gifLink: game.gifLink, finished: game.finished, currentStreak: game.currentStreak, neededWins: game.neededWins})
+            currentGames.push({_id: game._id, name:game.name, gifLink: game.gifLink,
+                finished: game.finished, currentStreak: game.currentStreak,
+                neededWins: game.neededWins,
+                failCount: game.failCount,
+                tries: game.tries
+            })
         })
         renderGames(currentGames);
     })
@@ -42,7 +51,11 @@ function callbackAddGame(){
     const wins = inputWins.value;
     if(!name || !wins) return; //Name and wins müssen gesetzt werden
 
-    fetch(`${SERVER_URL}/add-game`, {
+    //Add game with list id
+    const params = new URLSearchParams(window.location.search);
+    const listId = params.get("id");
+
+    fetch(`${SERVER_URL}/add-game/${listId}`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
@@ -65,7 +78,10 @@ function callbackAddGame(){
 
 //Delete a game from the database
 function deleteGame(pStrId){
-    fetch(`${SERVER_URL}/delete-game`, {
+    const params = new URLSearchParams(window.location.search);
+    const listId = params.get("id");
+
+    fetch(`${SERVER_URL}/delete-game/${listId}`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
@@ -82,14 +98,29 @@ function deleteGame(pStrId){
     });
 }
 
-function setFinished(pGame, pFinishedValue){
-    const name = pGame.name;
-    updateGame({ name: name, finished: pFinishedValue});
 
+//Reset the streak of a game
+function resetGame(pGame){
+    //Only reset if game is not finished
+    if(!pGame.finished){
+        //Reset currentStreak to 0
+        //Increase failCount
+        //Add a failed try to the list 
+        const tries = [
+            ... pGame.tries,
+            {attempt: pGame.tries.length + 1, streak: pGame.currentStreak, result: "Failed"}
+        ]
+        const newGame = { name: pGame.name, currentStreak: 0, finished: false, failCount: pGame.failCount + 1, tries: tries}
+        updateGame(newGame);
+    }
 }
 
+
 function updateGame(pGame){
-    fetch(`${SERVER_URL}/update-game`, {
+    const params = new URLSearchParams(window.location.search);
+    const listId = params.get("id");
+
+    fetch(`${SERVER_URL}/update-game/${listId}`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
@@ -151,24 +182,30 @@ function renderGames(currentGames) {
         winCounter.classList.add("btn");
         winCounter.textContent = `${game.currentStreak} / ${game.neededWins}`;
         winCounter.onclick = () => {
-            let newStreakValue;
-            if(game.currentStreak === game.neededWins){
-                //Reset
-                newStreakValue = 0;
-                setFinished(game, false);
-            }else{
+            let newStreakValue = game.currentStreak;
+            let finished = false;
+            if(game.currentStreak < game.neededWins){
                 //Increase by 1
                 newStreakValue = game.currentStreak + 1;
                 if(newStreakValue === game.neededWins){
-                    setFinished(game, true);
+                    finished = true;
 
                     const index = Math.floor(Math.random() * gifMap.length);
                     socket.emit("showWinGif", { index });
                 }
             }
-            updateGame({ name: game.name, currentStreak: newStreakValue});
+            if(game.currentStreak !== newStreakValue){
+                updateGame({ name: game.name, currentStreak: newStreakValue, finished: finished});
+            }
         }
         counterCell.appendChild(winCounter);
+
+        //Reset Game Button
+        const resetCell = document.createElement('td');
+        const resetBtn = document.createElement("button");
+        resetBtn.classList.add("btn", "reset");
+        resetBtn.onclick = () => resetGame(game);
+        resetCell.appendChild(resetBtn);
 
         //Delete Button          
         const deleteCell = document.createElement('td');
@@ -179,6 +216,7 @@ function renderGames(currentGames) {
 
         row.appendChild(labelCell);
         row.appendChild(counterCell);
+        row.appendChild(resetCell);
         row.appendChild(deleteCell);
         list.appendChild(row);
     })
@@ -207,22 +245,18 @@ function showWinGif(pIndex) {
     gif.src = chosenGif.src;
     gif.alt = chosenGif.name;
     gifOverlay.style.display = "flex"; // show overlay
+    gifOverlay.onclick = () => {
+        gifOverlay.style.display = "none";
+        gif.src = "";
+    }
 
     //Hide overlay after duration
     setTimeout(() => {
         gifOverlay.style.display = "none";
         gif.src = "";
+        gifOverlay.onclick = null;
     }, chosenGif.duration);
 }
-
-
-document.getElementById("gif-overlay").onclick = () => {
-    const overlay = document.getElementById("gif-overlay");
-    const gif = document.getElementById("popup-gif");
-    overlay.style.display = "none";
-    gif.src = "";
-};
-
 
 // Load Mute Settings
 function loadSettings(){
