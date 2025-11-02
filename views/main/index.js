@@ -3,6 +3,7 @@ const SERVER_URL = "/api/v1";
 const socket = io();
 socket.on('refreshLists', () => {fetchLists()});
 
+let currentLists = [];
 
 function fetchLists() {
     fetch(`${SERVER_URL}/`, {
@@ -10,11 +11,12 @@ function fetchLists() {
     })
     .then(response => response.json())
     .then(data => {
-        let currentLists = [];
+
+        currentLists = [];
         data.data.lists.forEach(list=>{
-            currentLists.push({_id: list._id, name:list.name, status: list.status, date: list.date})
+            currentLists.push({_id: list._id, number: list.number, name:list.name, status: list.status, date: list.date})
         })
-        renderLists(currentLists);
+        renderLists();
     })
     .catch((error) => {
         console.error('Error:', error);
@@ -30,14 +32,19 @@ function addList(){
     const dateInput = document.getElementById("new-date");
     const date = dateInput.value;
 
+    let index = 1;
+    const lastList = currentLists.at(-1) ?? null;
+    if(lastList) index = lastList.number + 1;
+
     if(!name) return; //Name muss gesetzt werden
+
 
     fetch(`${SERVER_URL}/add-list`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({name:name, status: false, date:date}),
+        body: JSON.stringify({number: index, name:name, status: "Ongoing", date:date}),
     })
     .then(response => response.json())
     .then(() => {
@@ -52,7 +59,7 @@ function addList(){
 }
 
 //List the games in a table
-function renderLists(currentLists) {
+function renderLists() {
     const container = document.getElementById("lists-container");
     container.classList.add("container")
     container.innerHTML = "";
@@ -60,6 +67,14 @@ function renderLists(currentLists) {
     currentLists.forEach(list => {
         const row = document.createElement('div');
         row.classList.add("list-row");
+
+        const listNumberSpan = document.createElement("span");
+        listNumberSpan.classList.add("status");
+        listNumberSpan.textContent = list.number;
+
+        const statusSpan = document.createElement("span");
+        statusSpan.classList.add("status", list.status.toLowerCase());
+        statusSpan.textContent = list.status;
 
         const a = document.createElement("a");
         a.classList.add("btn");
@@ -77,6 +92,8 @@ function renderLists(currentLists) {
         deleteBtn.classList.add("btn", "delete");
         deleteBtn.onclick = () => deleteList(list._id);
 
+        row.appendChild(listNumberSpan);
+        row.appendChild(statusSpan);
         row.append(a);
         row.append(dateSpan)
         row.append(deleteBtn);

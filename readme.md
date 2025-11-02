@@ -14,21 +14,20 @@ npm run dev
 
 todo Games List:
 (Bearbeite Local)
-1.Man kann nicht mehr bei vollen Wins mit nächsten Klick zurücksetzen, sondern neuer "Fail"-Button. Speicher in Datenbank wie oft gefailed wurde und wie viele wins man hatte beim fail
 2.Stats page
-    - Tabelle mit: Game Name, FailCount, Status: Completed, Failed
     - wenn game completed wird -> tries einen erfolgereichen hinzufügen
     - Aufklappbar: Reihe mit Einträgen z.B. Fail Nr: 1, Erreichte Wins: 3/5, 
-3.Button unten links führen zu Stats von dieser einen Win Challenge
+    - Wenn ich auf Reihe klicke soll sich Untertabelle öffnen und schließen -> oder rechts im Popup
 4.Was wenn jmd ausversehen die Wins um einen erhöht hat? -> Kann man einen zurückgehen? denk an togglen
 5.Bei Reset und Delete einen Confirm Dialog einfügen + (nicht mehr nachfragen Option) + (Reason of Failure Eingbe bei Reset)
 6.Wenn alle Games completed werden, kommt z.B. Konfetti Animation und die Win Challenge wird auf Completed gesetzt
+7.Wenn Enter in Games-Feld gedrückt wird dann füg auch Game hinzu
+8. Neue listen element unten anlegen -> wenn du League hast und dann nochmal was mit L schreibst wird es nicht unten platziert
 
 
 todo home:
 1.Home Zeichen verbessern mit mehr Farben + Wind?
-2.Liste von Win Challenges anzeigen und auswählbar
-3.Neue Listen können angelegt und gelöscht werden
-4.Listen werden als Tabelle angezeigt: Nr. , Name, Status: Completed oder Failed 
-5.Stretch Namen der List auf die gleiche Länge
+6. Start und End Datum (+ Zeit) von Nutzer auswählbar -> in win challenge list ist oben dann ein timer -> wenn timer auf 0 setz status von liste auf failed sonst auf (complete oder running)
+7. Pack Status feld links rein: Setze svg icons für complete, ongoing, failed
+8. Wenn Enter in List-Feld gedrückt wird dann füg auch Liste hinzu
 

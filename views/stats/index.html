@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Win Challenge</title>
+    <link rel="stylesheet" href="/stats/style.css">
+  </head>
+  <body onload="fetchGames(); setListBtn()">
+    <div class="left-menu-bar">
+      <a class="btn home" href="/main/index.html">
+        <span class="arrow"></span>Home
+      </a>
+      <a id="list" class="btn list">
+        <span class="arrow"></span>List
+      </a>
+    </div>
+
+    <h1>Stats</h1>
+    <div class="neon-divider"></div>
+    <div class="container">
+        <table id="stats-table">
+          <thead>
+            <tr>
+              <th>Game</th>
+              <th>Fails</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="stat-list"></tbody>
+        </table>
+    </div>
+    <div class="neon-divider"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/stats/index.js"></script>
+  </body>
+</html> 

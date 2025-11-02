@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const listSchema = new mongoose.Schema({
+    number: {
+        type: Number,
+        required: [true, "A list number is required"],
+        unique: true
+    },
     name: {
         type: String,
         required: [true, "List Name is required"],
@@ -11,7 +16,8 @@ const listSchema = new mongoose.Schema({
         index: true
     },
     status: {
-        type: Boolean,
+        type: String,
+        enum: ["Completed", "Ongoing", "Failed"],
         required: true,
         default: false
     },

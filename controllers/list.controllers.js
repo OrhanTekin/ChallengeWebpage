@@ -26,7 +26,7 @@ export const addList = async (req, res, next) => {
 
     try {
         //Create a game
-        const {name, status, date} = req.body;
+        const {number, name, status, date} = req.body;
 
         //Check if game already exists
         const listExists = await List.findOne({name});
@@ -38,7 +38,7 @@ export const addList = async (req, res, next) => {
         }
 
         //Actual creation
-        const newLists = await List.create([{name, status, date}], {session});  //newGames[0]: weil man mehrere gleichzeitig erstellen kann
+        const newLists = await List.create([{number, name, status, date}], {session});  //newGames[0]: weil man mehrere gleichzeitig erstellen kann
         
         await session.commitTransaction();
         session.endSession();

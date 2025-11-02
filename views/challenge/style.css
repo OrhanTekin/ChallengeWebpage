@@ -129,12 +129,17 @@ h1 {
 
 /* Linkes Menu Start */
 .left-menu-bar{
-  position: absolute;
-  left: 15px;
+  position: fixed;
+  left: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start; 
+  bottom: 0;
+  top: 0;
+  justify-content: space-between;
+  padding: 2rem;
 }
+
 
 .home {
   font-size: 2rem;
@@ -188,6 +193,12 @@ h1 {
 .feature-card:hover::before {
   left: 150%;
 }
+
+.stats{
+  font-size: 2rem;
+  padding: 1rem 3rem;
+}
+
 /* Linkes Menu End */
 
 
@@ -238,7 +249,7 @@ h1 {
 
 
 /* Game marked as finished: Start*/
-.finished {
+.status.completed {
   position: relative;
   display: inline-block; /* shrink to text only */
   color: var(--primary-color);
@@ -249,7 +260,7 @@ h1 {
 }
 
 /* glowing strike line exactly across text */
-.finished::after {
+.status.completed::after {
   content: "";
   position: absolute;
   left: 0;

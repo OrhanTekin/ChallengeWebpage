@@ -19,10 +19,11 @@ const gameSchema = new mongoose.Schema({
         trim: true,
         maxLength : 500,
     },
-    finished: {
-        type: Boolean,
+    status: {
+        type: String,
         required: true,
-        default: false
+        enum: ["Completed", "Ongoing"],
+        default: "Ongoing"
     },
     currentStreak: {
         type: Number,

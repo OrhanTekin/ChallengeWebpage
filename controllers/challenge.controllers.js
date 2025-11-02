@@ -26,7 +26,7 @@ export const addGame = async (req, res, next) => {
 
     try {
         //Create a game in the correct list
-        const {name, gifLink, finished, neededWins} = req.body;
+        const {name, gifLink, status, neededWins} = req.body;
         const { listId } = req.params;
         //Check if game already exists
         const gameExists = await Game.findOne({name, listId });
@@ -38,7 +38,7 @@ export const addGame = async (req, res, next) => {
         }
 
         //Actual creation
-        const newGames = await Game.create([{name, gifLink, finished, neededWins, listId}], {session});  //newGames[0]: weil man mehrere gleichzeitig erstellen kann
+        const newGames = await Game.create([{name, gifLink, status, neededWins, listId}], {session});  //newGames[0]: weil man mehrere gleichzeitig erstellen kann
         
         await session.commitTransaction();
         session.endSession();
@@ -69,12 +69,12 @@ export const updateGame = async (req, res, next) => {
 
     try {
         //Update a game
-        const {name, gifLink, finished, currentStreak, failCount, tries} = req.body;
+        const {name, gifLink, status, currentStreak, failCount, tries} = req.body;
         const { listId } = req.params;
 
         const updatedGame = await Game.findOneAndUpdate(
             {name, listId}, //Find game with name (unique)
-            {name, gifLink, finished, currentStreak, failCount, tries, listId}, 
+            {name, gifLink, status, currentStreak, failCount, tries, listId}, 
             { 
                 new: true,        // return updated document
                 runValidators: true // validate against schema

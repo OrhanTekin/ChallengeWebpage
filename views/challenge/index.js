@@ -20,7 +20,7 @@ function fetchGames() {
         let currentGames = [];
         data.data.games.forEach(game=>{
             currentGames.push({_id: game._id, name:game.name, gifLink: game.gifLink,
-                finished: game.finished, currentStreak: game.currentStreak,
+                status: game.status, currentStreak: game.currentStreak,
                 neededWins: game.neededWins,
                 failCount: game.failCount,
                 tries: game.tries
@@ -60,7 +60,7 @@ function callbackAddGame(){
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({name:name, gifLink: gifInputValue, finished:false, currentStreak: 0, neededWins: wins}),
+        body: JSON.stringify({name:name, gifLink: gifInputValue, currentStreak: 0, neededWins: wins}),
     })
     .then(response => response.json())
     .then(() => {
@@ -101,8 +101,8 @@ function deleteGame(pStrId){
 
 //Reset the streak of a game
 function resetGame(pGame){
-    //Only reset if game is not finished
-    if(!pGame.finished){
+    //Only reset if game is not completed and currentStreak is >0
+    if(pGame.status !== "Completed" && pGame.currentStreak > 0){
         //Reset currentStreak to 0
         //Increase failCount
         //Add a failed try to the list 
@@ -110,7 +110,7 @@ function resetGame(pGame){
             ... pGame.tries,
             {attempt: pGame.tries.length + 1, streak: pGame.currentStreak, result: "Failed"}
         ]
-        const newGame = { name: pGame.name, currentStreak: 0, finished: false, failCount: pGame.failCount + 1, tries: tries}
+        const newGame = { name: pGame.name, currentStreak: 0, status: "Ongoing", failCount: pGame.failCount + 1, tries: tries}
         updateGame(newGame);
     }
 }
@@ -148,9 +148,10 @@ function renderGames(currentGames) {
 
         //Label + gif cell
         const labelCell = document.createElement('td');
-        const labelSpan = document.createElement('span'); //span needed for finished class 
+        const labelSpan = document.createElement('span'); //span needed for completed class 
         labelSpan.textContent = game.name;
-        if (game.finished) labelSpan.classList.add("finished"); // Durchgeschrichene Linie
+        labelSpan.classList.add("status")
+        if (game.status === "Completed") labelSpan.classList.add("completed"); // Durchgeschrichene Linie
 
         if (game.gifLink && game.gifLink.trim() !== "") {
             // GIF
@@ -183,19 +184,19 @@ function renderGames(currentGames) {
         winCounter.textContent = `${game.currentStreak} / ${game.neededWins}`;
         winCounter.onclick = () => {
             let newStreakValue = game.currentStreak;
-            let finished = false;
+            let status = "Ongoing";
             if(game.currentStreak < game.neededWins){
                 //Increase by 1
                 newStreakValue = game.currentStreak + 1;
                 if(newStreakValue === game.neededWins){
-                    finished = true;
+                    status = "Completed";
 
                     const index = Math.floor(Math.random() * gifMap.length);
                     socket.emit("showWinGif", { index });
                 }
             }
             if(game.currentStreak !== newStreakValue){
-                updateGame({ name: game.name, currentStreak: newStreakValue, finished: finished});
+                updateGame({ name: game.name, currentStreak: newStreakValue, status: status});
             }
         }
         counterCell.appendChild(winCounter);
@@ -258,7 +259,7 @@ function showWinGif(pIndex) {
     }, chosenGif.duration);
 }
 
-// Load Mute Settings
+// Load mute Settings
 function loadSettings(){
     const isMuted = localStorage.getItem('isMuted') === 'true';
     const button = document.getElementById('muteBtn');
@@ -268,6 +269,14 @@ function loadSettings(){
     } else {
         button.classList.remove('muted');
     }
+}
+
+function setStatsBtn(){
+    const params = new URLSearchParams(window.location.search);
+    const listId = params.get("id");
+
+    const aStats = document.getElementById('stats');
+    aStats.href = `/stats/index.html?id=${listId}`;
 }
 
 //Mute gif popups when toggled 
