@@ -14,7 +14,7 @@ function fetchLists() {
 
         currentLists = [];
         data.data.lists.forEach(list=>{
-            currentLists.push({_id: list._id, number: list.number, name:list.name, status: list.status, date: list.date})
+            currentLists.push({_id: list._id, number: list.number, name:list.name, status: list.status, startDate: list.startDate, endDate: list.endDate})
         })
         renderLists();
     })
@@ -29,8 +29,11 @@ function addList(){
     const inputList = document.getElementById('new-list')
     const name = inputList.value.trim();
 
-    const dateInput = document.getElementById("new-date");
-    const date = dateInput.value;
+    const startDateInput = document.getElementById("new-start-date");
+    const startDate = startDateInput.value;
+
+    const endDateInput = document.getElementById("new-end-date");
+    const endDate = endDateInput.value;
 
     let index = 1;
     const lastList = currentLists.at(-1) ?? null;
@@ -44,7 +47,7 @@ function addList(){
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({number: index, name:name, status: "Ongoing", date:date}),
+        body: JSON.stringify({number: index, name:name, status: "Ongoing", startDate: startDate, endDate: endDate}),
     })
     .then(response => response.json())
     .then(() => {
@@ -85,7 +88,7 @@ function renderLists() {
         
         const dateSpan = document.createElement("span");
         dateSpan.classList.add("date");
-        const date = new Date(list.date);
+        const date = new Date(list.startDate);
         dateSpan.textContent = date.toLocaleDateString();
 
         const deleteBtn = document.createElement("button");
@@ -142,13 +145,18 @@ function deleteList(pStrListId){
 
 //Default:heute von Date Input setzen
 function setDateDefault() {
-    const dateInput = document.getElementById("new-date");
-    const today = new Date();
+    const startDateInput = document.getElementById("new-start-date");
+    const now = new Date();
 
-    // Format date as YYYY-MM-DD
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, "0");
-    const dd = String(today.getDate()).padStart(2, "0");
+    // Format as YYYY-MM-DDTHH:MM (the "T" is required)
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, "0");
+    const dd = String(now.getDate()).padStart(2, "0");
+    const hh = String(now.getHours()).padStart(2, "0");
+    const min = String(now.getMinutes()).padStart(2, "0");
 
-    dateInput.value = `${yyyy}-${mm}-${dd}`;
+    startDateInput.value = `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+
+    const endDateInput = document.getElementById("new-end-date");
+    endDateInput.value = `${yyyy}-${mm}-${dd}T${hh}:${min}`;
 }

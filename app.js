@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'views')));
 
 
 //Routes registration (can be more))
-app.use('/api/v1/', listRouter)
+app.use('/api/v1', listRouter)
 app.use('/api/v1/challenges', challengeRouter)
 
 //Custom Middleware registration (can be more)

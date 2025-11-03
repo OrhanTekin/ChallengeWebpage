@@ -37,10 +37,16 @@ function renderGames(currentGames){
     const list = document.getElementById('stat-list')
     list.innerHTML = ''
 
+    const triesTable = document.getElementById('stats-tries-table');
+    triesTable.classList.remove('visible');
+    const tryList = document.getElementById("try-list");
+
+    let activeRow = null; //track the currently open row
+
     //A row for each game
     currentGames.forEach((game) => {
         const row = document.createElement('tr');
-        // row.classList.add("clickable-row");
+        row.classList.add("clickable-row");
 
         //Label
         const labelCell = document.createElement('td');
@@ -48,7 +54,6 @@ function renderGames(currentGames){
 
         const failCountCell = document.createElement('td');
         failCountCell.textContent = game.failCount;
-        failCountCell.classList.add("failCell");
 
         const statusCell = document.createElement('td');
         statusCell.textContent = game.status;
@@ -58,7 +63,15 @@ function renderGames(currentGames){
 
         // --- Toggle subtable on click
         row.addEventListener("click", () => {
-            const subListStats = document.createElement("tbody");
+            //Clicking the same row twices closes table
+            if (activeRow === game) {
+                triesTable.classList.remove('visible');
+                tryList.innerHTML = '';
+                activeRow = null;
+                return;
+            }
+
+            tryList.innerHTML = '';
 
             game.tries.forEach((tryEntry, index) => {
                 const tryRow = document.createElement("tr");
@@ -67,7 +80,7 @@ function renderGames(currentGames){
                 attemptCell.textContent = tryEntry.attempt;
 
                 const streakCell = document.createElement("td");
-                streakCell.textContent = tryEntry.streak;
+                streakCell.textContent = `${tryEntry.streak}/${game.neededWins}`;
 
                 const resultCell = document.createElement("td");
                 resultCell.textContent = tryEntry.result;
@@ -76,9 +89,12 @@ function renderGames(currentGames){
                 failureReasonCell.textContent = tryEntry.failureReason;
 
                 tryRow.append(attemptCell, streakCell, resultCell, failureReasonCell);
-                subListStats.appendChild(tryRow);
-                list.appendChild(subListStats)
+                tryList.appendChild(tryRow);
             });
+            // Show sub table with tries
+            triesTable.classList.add('visible');
+
+            activeRow = game;
         });
 
     })

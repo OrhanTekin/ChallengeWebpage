@@ -207,6 +207,7 @@ h1 .broken {
   display: flex;
   gap: 1rem;
   margin-top: 1rem;
+  justify-content: center;
 }
 
 
@@ -219,7 +220,6 @@ h1 .broken {
   background: transparent;
   outline: none;
   transition: all 0.4s ease;
-  width: 200px; /* optional — adjust as needed */
 }
 
 /* Match hover/active states like .btn */
@@ -235,7 +235,7 @@ h1 .broken {
 /* Lists */
 .list-row {
   display: grid;
-  grid-template-columns: auto auto 1fr auto auto;
+  grid-template-columns: auto 0.5fr 1fr auto auto;
   gap: 10px;
 }
 

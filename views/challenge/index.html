@@ -7,22 +7,22 @@
     <title>Win Challenge</title>
     <link rel="stylesheet" href="/challenge/style.css">
   </head>
-  <body onload="fetchGames(); loadSettings(); setStatsBtn()">
+  <body onload="init()">
     <div class="left-menu-bar">
       <a class="btn home" href="/main/index.html">
         <span class="arrow"></span>Home
       </a>
-      <!-- <div class="features">
-        <div class="feature-card">Win back to back to complete a game</div>
-        <div class="feature-card">Reset a game on a lose</div>
-        <div class="feature-card">Just Win</div>
-      </div> -->
+      <div class="features">
+        <!-- <div id="timer" class="feature-card"></div> -->
+        <!-- <div class="feature-card">Reset a game on a lose</div>
+        <div class="feature-card">Just Win</div> -->
+      </div>
       <a id="stats" class="btn stats">Stats</a>
     </div>
 
-    <h1>Win Challenge</h1>
+    <h1 id="title">Win Challenge</h1>
     <div class="neon-divider"></div>
-    <h2 class="subheader">Somebody has to do it</h2>
+    <h2 id="timer" class="subheader"></h2>
     <div class="neon-divider"></div>
     <div class="container">
         <table id="game-table">
@@ -36,16 +36,21 @@
           </thead>
           <tbody id="game-list"></tbody>
         </table>
-        <div class="button-wrap">
+
+        <form onsubmit="callbackAddGame(); return false;">
+          <div class="button-wrap">
             <input type="text" class="input-text" id="new-game" placeholder="Enter a new game...">
             <input type="text" class="input-text" id="new-gif" placeholder="Enter a gif link...">
             <input type="number" class="input-number" id="needed-wins" placeholder="Enter the needed wins..." value="1">
-            <button class="btn add" onclick="callbackAddGame()"></button>
-        </div>
+            <button type="submit" class="btn add"></button>
+          </div>
+        </form>
         <div id="gif-overlay" class="gif-overlay">
           <img id="popup-gif" class="popup-gif" src="" alt="Win GIF">
         </div>
     </div>
+    <div class="neon-divider"></div>
+    <h2 class="subheader">Somebody has to do it</h2>
     <div class="neon-divider"></div>
     <button id="muteBtn" class="btn mute" onclick="toggleMute()">GIF popups</button>
 

@@ -14,20 +14,19 @@ npm run dev
 
 todo Games List:
 (Bearbeite Local)
-2.Stats page
-    - wenn game completed wird -> tries einen erfolgereichen hinzufügen
-    - Aufklappbar: Reihe mit Einträgen z.B. Fail Nr: 1, Erreichte Wins: 3/5, 
-    - Wenn ich auf Reihe klicke soll sich Untertabelle öffnen und schließen -> oder rechts im Popup
 4.Was wenn jmd ausversehen die Wins um einen erhöht hat? -> Kann man einen zurückgehen? denk an togglen
-5.Bei Reset und Delete einen Confirm Dialog einfügen + (nicht mehr nachfragen Option) + (Reason of Failure Eingbe bei Reset)
+5.Bei Reset und Delete einen Confirm Dialog einfügen + (nicht mehr nachfragen Option) + (Reason of Failure Eingbe bei Reset) + (Reason failure bei stats muss scrollbar sein)
 6.Wenn alle Games completed werden, kommt z.B. Konfetti Animation und die Win Challenge wird auf Completed gesetzt
-7.Wenn Enter in Games-Feld gedrückt wird dann füg auch Game hinzu
 8. Neue listen element unten anlegen -> wenn du League hast und dann nochmal was mit L schreibst wird es nicht unten platziert
+9.Verbessere Timer (chatgpt vorschlag) + feature card verbessern + Timer kurz vor Ende rot machen
+10. Bei Liste anlegen mach Button wo du sagen kannst wie lange Challenge gehen kann (3 Tag,6 Tage, eigene Auswahl)
+11. Vielleicht Header in Liste anzeigen reinpacken (füge auch Start und End Datum hinzu)
 
 
 todo home:
 1.Home Zeichen verbessern mit mehr Farben + Wind?
 6. Start und End Datum (+ Zeit) von Nutzer auswählbar -> in win challenge list ist oben dann ein timer -> wenn timer auf 0 setz status von liste auf failed sonst auf (complete oder running)
 7. Pack Status feld links rein: Setze svg icons für complete, ongoing, failed
-8. Wenn Enter in List-Feld gedrückt wird dann füg auch Liste hinzu
+8. End date einfügen + Länge der Felder fixen
+9. Fix Timer: setTimer wird nur aufgerufen wenn Liste ausgewählt wird -> wenn Timer gleich 0 ist wird das Feld erst von "Ongoing" auf "Failed" gesetzt wenn die Liste ausgewählt wird
 

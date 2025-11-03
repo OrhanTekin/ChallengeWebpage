@@ -21,9 +21,13 @@ const listSchema = new mongoose.Schema({
         required: true,
         default: false
     },
-    date:{
+    startDate:{
         type: Date,
         default: Date.now
+    },
+    endDate: {
+        type: Date,
+        required: true
     }
 
 }, {timestamps: true});

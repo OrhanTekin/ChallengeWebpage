@@ -110,7 +110,7 @@ function resetGame(pGame){
             ... pGame.tries,
             {attempt: pGame.tries.length + 1, streak: pGame.currentStreak, result: "Failed"}
         ]
-        const newGame = { name: pGame.name, currentStreak: 0, status: "Ongoing", failCount: pGame.failCount + 1, tries: tries}
+        const newGame = { _id: pGame._id, name: pGame.name, currentStreak: 0, status: "Ongoing", failCount: pGame.failCount + 1, tries: tries}
         updateGame(newGame);
     }
 }
@@ -184,19 +184,25 @@ function renderGames(currentGames) {
         winCounter.textContent = `${game.currentStreak} / ${game.neededWins}`;
         winCounter.onclick = () => {
             let newStreakValue = game.currentStreak;
+            let newTries = game.tries;
             let status = "Ongoing";
             if(game.currentStreak < game.neededWins){
                 //Increase by 1
                 newStreakValue = game.currentStreak + 1;
                 if(newStreakValue === game.neededWins){
                     status = "Completed";
+                    newTries = [
+                        ... game.tries,
+                        {attempt: game.tries.length + 1, streak: game.neededWins, result: "Completed"}
+                    ]
+
 
                     const index = Math.floor(Math.random() * gifMap.length);
                     socket.emit("showWinGif", { index });
                 }
             }
             if(game.currentStreak !== newStreakValue){
-                updateGame({ name: game.name, currentStreak: newStreakValue, status: status});
+                updateGame({ _id: game._id, name: game.name, currentStreak: newStreakValue, tries: newTries, status: status});
             }
         }
         counterCell.appendChild(winCounter);
@@ -269,9 +275,12 @@ function loadSettings(){
     } else {
         button.classList.remove('muted');
     }
+
+
 }
 
-function setStatsBtn(){
+function setStatBtn(){
+    //Stats button
     const params = new URLSearchParams(window.location.search);
     const listId = params.get("id");
 
@@ -285,4 +294,97 @@ function toggleMute() {
     const isMuted = button.classList.toggle('muted');
 
     localStorage.setItem('isMuted', isMuted);
+}
+
+//Get the parent list
+function getList() {
+    const params = new URLSearchParams(window.location.search);
+    const listId = params.get("id");
+
+    fetch(`/api/v1/${listId}`, {
+        method: 'GET',
+    })
+    .then(response => response.json())
+    .then(data => {
+        const list = data.data.list;
+        setTimer(list, listId);
+        setTitle(list);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        throw error;
+    });
+
+}
+
+
+//Remaining time 
+function setTimer(list, pListId){
+    const timer = document.getElementById('timer');
+
+    const endDate = new Date(list.endDate);
+
+    let intervalId;
+
+    // Function to update the timer
+    function updateTimer() {
+        const now = new Date();
+        const total = endDate - now; // difference in ms
+
+        if (total <= 0) {
+            timer.textContent = "⏰ Time's up!";
+            clearInterval(intervalId);
+            if(list.status === "Ongoing"){
+                //Update List to completed
+                fetch(`/api/v1/update-list/${pListId}`, {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({status: "Failed"}),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    //Failed animation?
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    throw error;
+                });
+            }
+            
+            return;
+        }
+
+        // Convert milliseconds to h:m:s
+        const hours = Math.floor(total / (1000 * 60 * 60));
+        const minutes = Math.floor((total % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((total % (1000 * 60)) / 1000);
+
+        // Format with leading zeros
+        const hh = String(hours).padStart(2, "0");
+        const mm = String(minutes).padStart(2, "0");
+        const ss = String(seconds).padStart(2, "0");
+
+        timer.textContent = `${hh}:${mm}:${ss}`;
+    }
+
+    // Update immediately once
+    updateTimer();
+
+    // Set an interval to update every second
+    intervalId = setInterval(updateTimer, 1000);
+}
+
+//Header of page
+function setTitle(pList){
+    const title = document.getElementById('title');
+    title.textContent = pList.name;
+}
+
+function init() {
+    fetchGames(); 
+    loadSettings(); 
+    setStatBtn();
+    getList();
 }

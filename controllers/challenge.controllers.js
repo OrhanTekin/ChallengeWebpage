@@ -69,12 +69,12 @@ export const updateGame = async (req, res, next) => {
 
     try {
         //Update a game
-        const {name, gifLink, status, currentStreak, failCount, tries} = req.body;
+        const {_id, name, gifLink, status, currentStreak, failCount, tries} = req.body;
         const { listId } = req.params;
 
         const updatedGame = await Game.findOneAndUpdate(
-            {name, listId}, //Find game with name (unique)
-            {name, gifLink, status, currentStreak, failCount, tries, listId}, 
+            {_id, listId}, //Find game with name (unique)
+            {_id, name, gifLink, status, currentStreak, failCount, tries, listId}, 
             { 
                 new: true,        // return updated document
                 runValidators: true // validate against schema

@@ -181,17 +181,20 @@ h1 {
   }
 }
 
+#stats-tries-table,
 #stats-table {
-  width: 100%;
+  width: 700px;
   border-collapse: collapse;
 }
 
+#stats-tries-table th, #stats-tries-table td,
 #stats-table th, #stats-table td {
   border: 2px solid white;
   padding: 0.5rem;
   text-align: center;
 }
 
+#stats-tries-table th,
 #stats-table th {
   font-size: 2rem;
   color: var(--primary-color);
@@ -203,6 +206,7 @@ h1 {
   animation: glowPulse 2.5s ease-in-out infinite alternate;
 }
 
+#stats-tries-table tr:hover,
 #stats-table tr:hover {
   border-color: var(--primary-color);
   color: var(--primary-color);
@@ -218,6 +222,15 @@ h1 {
 }
 
 
-.failCell{
-    cursor: pointer;
+.clickable-row{
+  cursor: pointer;
+}
+
+
+#stats-tries-table{
+  display: none;
+}
+
+#stats-tries-table.visible {
+  display: table;
 }

@@ -11,11 +11,14 @@
     <h1><span class="broken">H</span>ome</h1>
     <div class="container">
       <div id="lists-container"></div>
-      <div class="button-wrap">
-        <input type="text" class="input-text" id="new-list" placeholder="Enter a list name...">
-        <input type="date" class="input-text" id="new-date">
-        <button class="btn add" onclick="addList()"></button>
-      </div>
+      <form onsubmit="addList(); return false;">
+        <div class="button-wrap">
+          <input type="text" class="input-text" id="new-list" placeholder="Enter a list name...">
+          <input type="datetime-local" class="input-text" id="new-start-date">
+          <input type="datetime-local" class="input-text" id="new-end-date">
+          <button type="submit" class="btn add"></button>
+        </div>
+      </form>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/main/index.js"></script>

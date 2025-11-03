@@ -1,10 +1,12 @@
 import { Router } from 'express';
-import { showList, addList, deleteList } from '../controllers/list.controllers.js';
+import { showLists, showListById, addList, updateList, deleteList } from '../controllers/list.controllers.js';
 
-const challengeRouter = Router();
+const listRouter = Router();
 
-challengeRouter.get('/', showList);
-challengeRouter.post('/add-list', addList);
-challengeRouter.post('/delete-list', deleteList);
+listRouter.get('/', showLists);
+listRouter.get('/:_id', showListById);
+listRouter.post('/add-list', addList);
+listRouter.post('/update-list/:_id', updateList);
+listRouter.post('/delete-list', deleteList);
 
-export default challengeRouter;
+export default listRouter;
