@@ -56,7 +56,7 @@ function renderGames(currentGames){
         failCountCell.textContent = game.failCount;
 
         const statusCell = document.createElement('td');
-        statusCell.textContent = game.status;
+        statusCell.classList.add("status", game.status.toLowerCase());
 
         row.append(labelCell, failCountCell, statusCell);
         list.appendChild(row);
@@ -83,7 +83,7 @@ function renderGames(currentGames){
                 streakCell.textContent = `${tryEntry.streak}/${game.neededWins}`;
 
                 const resultCell = document.createElement("td");
-                resultCell.textContent = tryEntry.result;
+                resultCell.classList.add("result", tryEntry.result.toLowerCase());
 
                 const failureReasonCell = document.createElement("td");
                 failureReasonCell.textContent = tryEntry.failureReason;

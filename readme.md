@@ -26,7 +26,6 @@ todo Games List:
 todo home:
 1.Home Zeichen verbessern mit mehr Farben + Wind?
 6. Start und End Datum (+ Zeit) von Nutzer auswählbar -> in win challenge list ist oben dann ein timer -> wenn timer auf 0 setz status von liste auf failed sonst auf (complete oder running)
-7. Pack Status feld links rein: Setze svg icons für complete, ongoing, failed
-8. End date einfügen + Länge der Felder fixen
+8. Länge der Felder fixen
 9. Fix Timer: setTimer wird nur aufgerufen wenn Liste ausgewählt wird -> wenn Timer gleich 0 ist wird das Feld erst von "Ongoing" auf "Failed" gesetzt wenn die Liste ausgewählt wird
 

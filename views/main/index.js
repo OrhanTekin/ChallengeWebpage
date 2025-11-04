@@ -77,7 +77,6 @@ function renderLists() {
 
         const statusSpan = document.createElement("span");
         statusSpan.classList.add("status", list.status.toLowerCase());
-        statusSpan.textContent = list.status;
 
         const a = document.createElement("a");
         a.classList.add("btn");
@@ -86,10 +85,16 @@ function renderLists() {
             ${list.name} <span class="arrow"></span>
         `;
         
-        const dateSpan = document.createElement("span");
-        dateSpan.classList.add("date");
-        const date = new Date(list.startDate);
-        dateSpan.textContent = date.toLocaleDateString();
+        const startDateSpan = document.createElement("span");
+        startDateSpan.classList.add("date");
+        const startDate = new Date(list.startDate);
+        startDateSpan.textContent = `${startDate.toLocaleDateString()} ${startDate.toLocaleTimeString()}`;
+
+        const endDateSpan = document.createElement("span");
+        endDateSpan.classList.add("date");
+        const endDate = new Date(list.endDate);
+        endDateSpan.textContent = `${endDate.toLocaleDateString()} ${endDate.toLocaleTimeString()}`;
+        
 
         const deleteBtn = document.createElement("button");
         deleteBtn.classList.add("btn", "delete");
@@ -98,7 +103,8 @@ function renderLists() {
         row.appendChild(listNumberSpan);
         row.appendChild(statusSpan);
         row.append(a);
-        row.append(dateSpan)
+        row.append(startDateSpan);
+        row.append(endDateSpan);
         row.append(deleteBtn);
         container.appendChild(row);
     });
