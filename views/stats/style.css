@@ -222,6 +222,11 @@ h1 {
 }
 
 
+.failureReason {
+  word-break: break-word;
+}
+
+
 .clickable-row{
   cursor: pointer;
 }

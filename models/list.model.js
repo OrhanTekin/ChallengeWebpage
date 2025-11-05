@@ -18,8 +18,7 @@ const listSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ["Completed", "Ongoing", "Failed"],
-        required: true,
-        default: false
+        required: true
     },
     startDate:{
         type: Date,
@@ -33,5 +32,4 @@ const listSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 const List = mongoose.model("List", listSchema);
-
 export default List;

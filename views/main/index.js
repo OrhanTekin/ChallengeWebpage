@@ -11,7 +11,6 @@ function fetchLists() {
     })
     .then(response => response.json())
     .then(data => {
-
         currentLists = [];
         data.data.lists.forEach(list=>{
             currentLists.push({_id: list._id, number: list.number, name:list.name, status: list.status, startDate: list.startDate, endDate: list.endDate})

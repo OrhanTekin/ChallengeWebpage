@@ -6,7 +6,7 @@ import { io } from '../app.js';
 export const showList = async (req, res, next) => {
     try {
         const { listId } = req.params;
-        const gameList = await Game.find({listId});
+        const gameList = await Game.find({listId}).sort({ createdAt: 1 }); //sort by createdAt so that new games are at the bottom
         res.status(200).json({
             success: true,
             message: "GET game list",

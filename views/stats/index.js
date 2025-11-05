@@ -86,6 +86,7 @@ function renderGames(currentGames){
                 resultCell.classList.add("result", tryEntry.result.toLowerCase());
 
                 const failureReasonCell = document.createElement("td");
+                failureReasonCell.classList.add("failureReason");
                 failureReasonCell.textContent = tryEntry.failureReason;
 
                 tryRow.append(attemptCell, streakCell, resultCell, failureReasonCell);

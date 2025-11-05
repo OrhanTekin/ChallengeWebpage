@@ -6,6 +6,18 @@ import { io } from '../app.js';
 //Show all challenge lists
 export const showLists = async (req, res, next) => {
     try {
+        const now = new Date();
+        
+        //Update any expired lists
+        await List.updateMany(
+            {
+                status: "Ongoing",
+                endDate: { $lt: now }
+            },
+            { $set: { status: "Failed" } }
+        );
+
+        //Fetch updated lists
         const gameLists = await List.find();
         res.status(200).json({
             success: true,

@@ -63,7 +63,7 @@ const gameSchema = new mongoose.Schema({
                 type: String,
                 trim: true,
                 minLength : 1,
-                maxLength : 50,
+                maxLength : 500,
             }
         }
     ]

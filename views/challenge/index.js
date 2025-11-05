@@ -76,6 +76,25 @@ function callbackAddGame(){
 
 }
 
+//Confirmation before deleting
+function deleteConfirmation(pStrId){
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This will permanently delete the game and its stats.",
+        icon: 'warning',
+        background: '#011623', // dark background
+        color: '#fff', // text color
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: 'var(--primary-color)',
+        confirmButtonText: 'Yes, delete it!',
+        
+    })
+    .then((result) => {
+        if (result.isConfirmed) deleteGame(pStrId);
+    });
+}
+
 //Delete a game from the database
 function deleteGame(pStrId){
     const params = new URLSearchParams(window.location.search);
@@ -98,21 +117,55 @@ function deleteGame(pStrId){
     });
 }
 
+//Confirmation dialog when you reset a game
+function resetConfirmation(pGame){
+    //Only reset if game is not completed and currentStreak is >0
+    if(pGame.status !== "Completed" && pGame.currentStreak > 0){       
+        Swal.fire({
+            title: 'Reason of Failure',
+            text: "Write why you lost",
+            background: '#011623', // dark background
+            color: '#fff', // text color
+            showCancelButton: true,
+            cancelButtonColor: '#d33',
+            confirmButtonColor: 'var(--primary-color)',
+            input: 'text',
+            inputPlaceholder: 'Type here...',
+            inputAttributes: {
+                autocapitalize: 'off',
+                maxlength: 500
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Submit',
+            cancelButtonText: 'Cancel',
+            preConfirm: (value) => {
+                if (!value) {
+                    Swal.showValidationMessage('You need to type something!');
+                }
+                return value;
+            }
+            
+        })
+        .then((result) => {
+            const failureReason = result.value;
+            if (result.isConfirmed) resetGame(pGame, failureReason);
+        });
+    }
+    
+}
 
 //Reset the streak of a game
-function resetGame(pGame){
-    //Only reset if game is not completed and currentStreak is >0
-    if(pGame.status !== "Completed" && pGame.currentStreak > 0){
-        //Reset currentStreak to 0
-        //Increase failCount
-        //Add a failed try to the list 
-        const tries = [
-            ... pGame.tries,
-            {attempt: pGame.tries.length + 1, streak: pGame.currentStreak, result: "Failed"}
-        ]
-        const newGame = { _id: pGame._id, name: pGame.name, currentStreak: 0, status: "Ongoing", failCount: pGame.failCount + 1, tries: tries}
-        updateGame(newGame);
-    }
+function resetGame(pGame, pFailureReason){
+    //Reset currentStreak to 0
+    //Increase failCount
+    //Add a failed try to the list 
+    const tries = [
+        ... pGame.tries,
+        {attempt: pGame.tries.length + 1, streak: pGame.currentStreak, failureReason: pFailureReason, result: "Failed"}
+    ]
+    const newGame = { _id: pGame._id, name: pGame.name, currentStreak: 0, status: "Ongoing", failCount: pGame.failCount + 1, tries: tries}
+    updateGame(newGame);
+    
 }
 
 
@@ -211,14 +264,14 @@ function renderGames(currentGames) {
         const resetCell = document.createElement('td');
         const resetBtn = document.createElement("button");
         resetBtn.classList.add("btn", "reset");
-        resetBtn.onclick = () => resetGame(game);
+        resetBtn.onclick = () => resetConfirmation(game);
         resetCell.appendChild(resetBtn);
 
         //Delete Button          
         const deleteCell = document.createElement('td');
         const deleteBtn = document.createElement("button");
         deleteBtn.classList.add("btn", "delete");
-        deleteBtn.onclick = () => deleteGame(game._id);
+        deleteBtn.onclick = () => deleteConfirmation(game._id);
         deleteCell.appendChild(deleteBtn);
 
         row.appendChild(labelCell);
