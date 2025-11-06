@@ -17,6 +17,7 @@ function fetchGames() {
     })
     .then(response => response.json())
     .then(data => {
+        let countCompleted = 0;
         let currentGames = [];
         data.data.games.forEach(game=>{
             currentGames.push({_id: game._id, name:game.name, gifLink: game.gifLink,
@@ -24,8 +25,30 @@ function fetchGames() {
                 neededWins: game.neededWins,
                 failCount: game.failCount,
                 tries: game.tries
-            })
+            });
+            if(game.status === "Completed") countCompleted++;
+        });
+        const completionCount = document.getElementById('completion-count');
+        completionCount.textContent = `${countCompleted} / ${currentGames.length}`;
+
+        //Get List
+        fetch(`/api/v1/${listId}`, {
+            method: 'GET',
         })
+        .then(response => response.json())
+        .then(data => {
+            const list = data.data.list;
+            tryUpdateList(list, countCompleted, currentGames.length);
+            setTimer(list, listId);
+            setTitle(list);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            throw error;
+        });
+
+
+        
         renderGames(currentGames);
     })
     .catch((error) => {
@@ -231,7 +254,7 @@ function renderGames(currentGames) {
 
         //Counter: Current value / maxValue
         const counterCell = document.createElement('td');
-        const winCounter = document.createElement("counter-label");
+        const winCounter = document.createElement("button");
         winCounter.classList.add("score");
         winCounter.classList.add("btn");
         winCounter.textContent = `${game.currentStreak} / ${game.neededWins}`;
@@ -349,27 +372,48 @@ function toggleMute() {
     localStorage.setItem('isMuted', isMuted);
 }
 
-//Get the parent list
-function getList() {
+//Update the status of the list
+function tryUpdateList(pList, pCountCompleted, pCurrentGamesLength) {
+    const oldStatus = pList.status;
+    if(oldStatus === "Failed") return; // Status der Liste kann nicht verändert werden nach "Failed"
+    let newListStatus = "";
+    if(pCurrentGamesLength === 0){
+        if(oldStatus === "Ongoing") return; 
+        newListStatus = "Ongoing"
+    }
+    else if(pCountCompleted === pCurrentGamesLength){
+        //Liste auf completed setzen
+        if(oldStatus === "Completed") return; //Nur einmal Listen auf Completed setzen
+        newListStatus = "Completed";
+    }else if(pCountCompleted < pCurrentGamesLength){
+        //Wenn Status completed war -> Stell zurück auf Ongoing
+        if(oldStatus === "Completed"){
+            newListStatus = "Ongoing";
+        }else{
+            return;
+        }
+    }
+    updateListStatus(newListStatus);
+    
+}
+
+//Update status of list
+function updateListStatus(pStatus){
     const params = new URLSearchParams(window.location.search);
     const listId = params.get("id");
-
-    fetch(`/api/v1/${listId}`, {
-        method: 'GET',
+    fetch(`/api/v1/update-list/${listId}`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({status: pStatus}),
     })
     .then(response => response.json())
-    .then(data => {
-        const list = data.data.list;
-        setTimer(list, listId);
-        setTitle(list);
-    })
     .catch((error) => {
         console.error('Error:', error);
         throw error;
     });
-
 }
-
 
 //Remaining time 
 function setTimer(list, pListId){
@@ -388,23 +432,32 @@ function setTimer(list, pListId){
             timer.textContent = "⏰ Time's up!";
             clearInterval(intervalId);
             if(list.status === "Ongoing"){
-                //Update List to completed
-                fetch(`/api/v1/update-list/${pListId}`, {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({status: "Failed"}),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    //Failed animation?
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    throw error;
-                });
+                //Update List Status to Failed
+                updateListStatus("Failed");
+                //Failed animation?             
             }
+            //Deaktiviere Add,Reset,Counter und Delete Button nachdem Zeit abgelaufen ist
+            const addBtn = document.getElementById('btn-add');
+            addBtn.classList.add("disabled");
+            addBtn.disabled = true;
+
+            const increaseScoreButtons = document.querySelectorAll(".score");
+            increaseScoreButtons.forEach(btn => {
+                btn.classList.add("disabled");
+                btn.disabled = true;
+            });
+
+            const resetButtons = document.querySelectorAll(".reset");
+            resetButtons.forEach(btn => {
+                btn.classList.add("disabled");
+                btn.disabled = true;
+            });
+
+            const deleteButtons = document.querySelectorAll(".delete");
+            deleteButtons.forEach(btn => {
+                btn.classList.add("disabled");
+                btn.disabled = true;
+            });
             
             return;
         }
@@ -439,5 +492,4 @@ function init() {
     fetchGames(); 
     loadSettings(); 
     setStatBtn();
-    getList();
 }

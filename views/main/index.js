@@ -165,3 +165,23 @@ function setDateDefault() {
     const endDateInput = document.getElementById("new-end-date");
     endDateInput.value = `${yyyy}-${mm}-${dd}T${hh}:${min}`;
 }
+
+//Update end date based on users combobox selection
+function updateEndDate(){
+    const startInput = document.getElementById('new-start-date');
+    const endInput = document.getElementById('new-end-date');
+    const durationSelect = document.getElementById('cb-duration');
+
+    const startValue = startInput.value;
+    const daysToAdd = parseFloat(durationSelect.value);
+
+    if (startValue && daysToAdd) {
+      const startDate = new Date(startValue);
+      startDate.setTime(startDate.getTime() + daysToAdd * 24 * 60 * 60 * 1000); // add fractional days
+      const endDateLocal = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000))
+        .toISOString()
+        .slice(0, 16);
+      endInput.value = endDateLocal;
+    }
+
+}
