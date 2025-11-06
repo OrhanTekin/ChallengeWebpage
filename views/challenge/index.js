@@ -418,8 +418,9 @@ function updateListStatus(pStatus){
 //Remaining time 
 function setTimer(list, pListId){
     const timer = document.getElementById('timer');
-
+    const startDate = new Date(list.startDate);
     const endDate = new Date(list.endDate);
+    const totalDuration = endDate - startDate;
 
     let intervalId;
 
@@ -430,6 +431,7 @@ function setTimer(list, pListId){
 
         if (total <= 0) {
             timer.textContent = "⏰ Time's up!";
+            timer.classList.add("timer-danger");
             clearInterval(intervalId);
             if(list.status === "Ongoing"){
                 //Update List Status to Failed
@@ -441,27 +443,25 @@ function setTimer(list, pListId){
             addBtn.classList.add("disabled");
             addBtn.disabled = true;
 
-            const increaseScoreButtons = document.querySelectorAll(".score");
-            increaseScoreButtons.forEach(btn => {
+            document.querySelectorAll(".score, .reset, .delete").forEach(btn => {
                 btn.classList.add("disabled");
                 btn.disabled = true;
-            });
-
-            const resetButtons = document.querySelectorAll(".reset");
-            resetButtons.forEach(btn => {
-                btn.classList.add("disabled");
-                btn.disabled = true;
-            });
-
-            const deleteButtons = document.querySelectorAll(".delete");
-            deleteButtons.forEach(btn => {
-                btn.classList.add("disabled");
-                btn.disabled = true;
-            });
-            
+            });            
             return;
         }
-
+        // Prozentualer Fortschritt
+        const percentLeft = (total / totalDuration) * 100;
+        if (percentLeft <= 10) {
+            timer.classList.remove("timer-warning", "timer-normal");
+            timer.classList.add("timer-danger");
+        } else if (percentLeft <= 30) {
+            timer.classList.remove("timer-danger", "timer-normal");
+            timer.classList.add("timer-warning");
+        } else {
+            timer.classList.remove("timer-danger", "timer-warning");
+            timer.classList.add("timer-normal");
+        }
+        
         // Convert milliseconds to h:m:s
         const hours = Math.floor(total / (1000 * 60 * 60));
         const minutes = Math.floor((total % (1000 * 60 * 60)) / (1000 * 60));

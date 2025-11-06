@@ -14,11 +14,10 @@ npm run dev
 
 todo Games List:
 (Bearbeite Local)
-1. Was wenn jmd ausversehen die Wins um einen erhöht hat? -> Kann man einen zurückgehen? denk an togglen
-2. Wenn alle Games completed werden, kommt z.B. Konfetti Animation
-3. Verbessere Timer (chatgpt vorschlag) + feature card verbessern + Timer kurz vor Ende rot machen
-4. Vielleicht Header in Liste anzeigen reinpacken
-5. Tabellen schöner und größer machen -> Schrift sowie Zellen
+1. Wenn alle Games completed werden, kommt z.B. Konfetti Animation
+2. Feature card verbessern: Mit Games Left
+3. Vielleicht Header in Liste anzeigen reinpacken
+4. Tabellen schöner und größer machen -> Schrift sowie Zellen
 
 
 
