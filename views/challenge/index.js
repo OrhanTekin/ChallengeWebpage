@@ -29,7 +29,7 @@ function fetchGames() {
             if(game.status === "Completed") countCompleted++;
         });
         const completionCount = document.getElementById('completion-count');
-        completionCount.textContent = `${countCompleted} / ${currentGames.length}`;
+        completionCount.textContent = `Progress: ${countCompleted} / ${currentGames.length} `;
 
         //Get List
         fetch(`/api/v1/${listId}`, {
@@ -39,7 +39,7 @@ function fetchGames() {
         .then(data => {
             const list = data.data.list;
             tryUpdateList(list, countCompleted, currentGames.length);
-            setTimer(list, listId);
+            setTimer(list);
             setTitle(list);
         })
         .catch((error) => {
@@ -385,6 +385,7 @@ function tryUpdateList(pList, pCountCompleted, pCurrentGamesLength) {
         //Liste auf completed setzen
         if(oldStatus === "Completed") return; //Nur einmal Listen auf Completed setzen
         newListStatus = "Completed";
+        showConfetti();
     }else if(pCountCompleted < pCurrentGamesLength){
         //Wenn Status completed war -> Stell zurück auf Ongoing
         if(oldStatus === "Completed"){
@@ -416,7 +417,7 @@ function updateListStatus(pStatus){
 }
 
 //Remaining time 
-function setTimer(list, pListId){
+function setTimer(list){
     const timer = document.getElementById('timer');
     const startDate = new Date(list.startDate);
     const endDate = new Date(list.endDate);
@@ -429,6 +430,7 @@ function setTimer(list, pListId){
         const now = new Date();
         const total = endDate - now; // difference in ms
 
+        timer.classList.remove("timer-normal", "timer-warning", "timer-danger", "timer-panic");
         if (total <= 0) {
             timer.textContent = "⏰ Time's up!";
             timer.classList.add("timer-danger");
@@ -450,15 +452,14 @@ function setTimer(list, pListId){
             return;
         }
         // Prozentualer Fortschritt
-        const percentLeft = (total / totalDuration) * 100;
-        if (percentLeft <= 10) {
-            timer.classList.remove("timer-warning", "timer-normal");
+        const percentLeft = (total / totalDuration) * 100;       
+        if (percentLeft <= 2) {
+            timer.classList.add("timer-panic");
+        } else if (percentLeft <= 10) {
             timer.classList.add("timer-danger");
         } else if (percentLeft <= 30) {
-            timer.classList.remove("timer-danger", "timer-normal");
             timer.classList.add("timer-warning");
         } else {
-            timer.classList.remove("timer-danger", "timer-warning");
             timer.classList.add("timer-normal");
         }
         
@@ -481,6 +482,44 @@ function setTimer(list, pListId){
     // Set an interval to update every second
     intervalId = setInterval(updateTimer, 1000);
 }
+
+//When is completed show celebration animation
+function showConfetti() {
+    const duration = 2000; // 2 seconds
+    const end = Date.now() + duration;
+
+    // Show "Congratulations" message
+    const msg = document.getElementById("congrats-message");
+    msg.classList.remove("hidden");
+    msg.classList.add("show");
+
+    (function frame() {
+        // Launch a few confetti pieces from random positions
+        confetti({
+            particleCount: 5,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+        });
+        confetti({
+            particleCount: 5,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+        });
+
+        // Keep going for the duration
+        if (Date.now() < end) {
+            requestAnimationFrame(frame);
+        } else {
+            setTimeout(() => {
+                msg.classList.remove("show");
+                msg.classList.add("hidden"), 600
+            });
+        }
+    })();
+}
+
 
 //Header of page
 function setTitle(pList){

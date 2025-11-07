@@ -12,11 +12,10 @@
       <a class="btn home" href="/main/index.html">
         <span class="arrow"></span>Home
       </a>
-      <div class="features">
-        <div id="completion-count" class="feature-card"></div>
-        <!-- <div class="feature-card">Reset a game on a lose</div>
-        <div class="feature-card">Just Win</div> -->
-      </div>
+      <!-- <div class="features">
+        <div class="feature-card">Reset a game on a lose</div>
+        <div class="feature-card">Just Win</div>
+      </div> -->
       <a id="stats" class="btn stats">Stats</a>
     </div>
 
@@ -36,7 +35,6 @@
           </thead>
           <tbody id="game-list"></tbody>
         </table>
-
         <form onsubmit="callbackAddGame(); return false;">
           <div class="button-wrap">
             <input type="text" class="input-text" id="new-game" placeholder="Enter a new game...">
@@ -50,10 +48,14 @@
         </div>
     </div>
     <div class="neon-divider"></div>
+    <div id="completion-count" class="subheader"></div>
+    <div class="neon-divider"></div>
     <h2 class="subheader">Somebody has to do it</h2>
     <div class="neon-divider"></div>
     <button id="muteBtn" class="btn mute" onclick="toggleMute()">GIF popups</button>
+    <div id="congrats-message" class="hidden">🎉 Congratulations! 🎉</div>
 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/challenge/index.js"></script>
