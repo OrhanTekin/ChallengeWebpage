@@ -13,11 +13,11 @@
       <div id="lists-container"></div>
       <form onsubmit="addList(); return false;">
         <div class="button-wrap">
-          <input type="text" class="input-text" id="new-list" placeholder="Enter a list name...">
-          <input type="datetime-local" class="input-text" id="new-start-date">
+          <input type="text" class="input-text" id="new-list" placeholder="Enter a list name..." title ="Name of the new List">
+          <input type="datetime-local" class="input-text" id="new-start-date" title ="Start Date of the new List">
           <!-- Duration dropdown -->
-          <select id="cb-duration" class="input-text" onchange="updateEndDate()">
-            <option value="">Select duration</option>
+          <select id="cb-duration" class="input-text" onchange="updateEndDate()" title ="End Date quick selector">
+            <option value="">Select challenge duration</option>
             <option value="0.5">Half a day</option>
             <option value="1">1 day</option>
             <option value="2">2 days</option>
@@ -28,8 +28,8 @@
             <option value="182.5">6 month</option>
             <option value="365">1 year</option>
           </select>
-          <input type="datetime-local" class="input-text" id="new-end-date">
-          <button type="submit" class="btn add"></button>
+          <input type="datetime-local" class="input-text" id="new-end-date" title ="End Date of the new List">
+          <button type="submit" class="btn add" title ="Add the new List"></button>
         </div>
       </form>
     </div>

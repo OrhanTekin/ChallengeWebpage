@@ -224,6 +224,7 @@ function renderGames(currentGames) {
 
         //Label + gif cell
         const labelCell = document.createElement('td');
+        labelCell.title = "Name of the Game";
         const labelSpan = document.createElement('span'); //span needed for completed class 
         labelSpan.textContent = game.name;
         labelSpan.classList.add("status")
@@ -254,6 +255,7 @@ function renderGames(currentGames) {
 
         //Counter: Current value / maxValue
         const counterCell = document.createElement('td');
+        counterCell.title = "Win Progress";
         const winCounter = document.createElement("button");
         winCounter.classList.add("score");
         winCounter.classList.add("btn");
@@ -285,6 +287,7 @@ function renderGames(currentGames) {
 
         //Reset Game Button
         const resetCell = document.createElement('td');
+        resetCell.title = "Reset Win progress";
         const resetBtn = document.createElement("button");
         resetBtn.classList.add("btn", "reset");
         resetBtn.onclick = () => resetConfirmation(game);
@@ -292,6 +295,7 @@ function renderGames(currentGames) {
 
         //Delete Button          
         const deleteCell = document.createElement('td');
+        deleteCell.title = "Delete the Game";
         const deleteBtn = document.createElement("button");
         deleteBtn.classList.add("btn", "delete");
         deleteBtn.onclick = () => deleteConfirmation(game._id);
@@ -419,6 +423,7 @@ function updateListStatus(pStatus){
 //Remaining time 
 function setTimer(list){
     const timer = document.getElementById('timer');
+    timer.title = "Remaining time";
     const startDate = new Date(list.startDate);
     const endDate = new Date(list.endDate);
     const totalDuration = endDate - startDate;

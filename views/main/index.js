@@ -73,12 +73,15 @@ function renderLists() {
         const listNumberSpan = document.createElement("span");
         listNumberSpan.classList.add("status");
         listNumberSpan.textContent = list.number;
+        listNumberSpan.title = "List Number";
 
         const statusSpan = document.createElement("span");
         statusSpan.classList.add("status", list.status.toLowerCase());
+        statusSpan.title = "Status";
 
         const a = document.createElement("a");
         a.classList.add("btn");
+        a.title = "List Name";
         a.href = `/challenge/index.html?id=${list._id}`;
         a.innerHTML = `
             ${list.name} <span class="arrow"></span>
@@ -88,16 +91,18 @@ function renderLists() {
         startDateSpan.classList.add("date");
         const startDate = new Date(list.startDate);
         startDateSpan.textContent = `${startDate.toLocaleDateString()} ${startDate.toLocaleTimeString()}`;
+        startDateSpan.title = "Start Date";
 
         const endDateSpan = document.createElement("span");
         endDateSpan.classList.add("date");
         const endDate = new Date(list.endDate);
         endDateSpan.textContent = `${endDate.toLocaleDateString()} ${endDate.toLocaleTimeString()}`;
-        
+        endDateSpan.title = "End Date";
 
         const deleteBtn = document.createElement("button");
         deleteBtn.classList.add("btn", "delete");
         deleteBtn.onclick = () => deleteList(list._id);
+        deleteBtn.title = "Delete List";
 
         row.appendChild(listNumberSpan);
         row.appendChild(statusSpan);
@@ -162,8 +167,10 @@ function setDateDefault() {
 
     startDateInput.value = `${yyyy}-${mm}-${dd}T${hh}:${min}`;
 
-    const endDateInput = document.getElementById("new-end-date");
-    endDateInput.value = `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+    //Default 3 Tage Liste
+    const durationSelect = document.getElementById("cb-duration");
+    durationSelect.value = "3";
+    updateEndDate();
 }
 
 //Update end date based on users combobox selection

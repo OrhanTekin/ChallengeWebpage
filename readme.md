@@ -12,14 +12,8 @@ What I used:
 Start Server locally:
 npm run dev
 
-todo Games List:
-(Bearbeite Local)
-1. Tabellen schöner und größer machen -> Schrift sowie Zellen
-
 
 todo home:
 1. Home Zeichen verbessern mit mehr Farben + Wind?
-2. Länge der Felder fixen
-3. Vielleicht Header in Liste anzeigen reinpacken
 
 

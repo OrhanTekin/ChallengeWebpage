@@ -369,7 +369,8 @@ h1 {
 
 /* table */
 #game-table {
-  width: 100%;
+  /* width: 100%; */
+  width: 1000px;
   border-collapse: collapse;
 }
 
@@ -380,7 +381,7 @@ h1 {
 }
 
 #game-table th {
-  font-size: 2rem;
+  font-size: 3rem;
   color: var(--primary-color);
   text-shadow:
     0 0 10px var(--primary-color),
@@ -388,6 +389,10 @@ h1 {
     0 0 40px rgba(41, 206, 247, 0.6);
   font-weight: 200;
   animation: glowPulse 2.5s ease-in-out infinite alternate;
+}
+
+#game-table td{
+  font-size: 2rem;
 }
 
 #game-table tr:hover {

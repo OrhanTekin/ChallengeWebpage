@@ -51,12 +51,15 @@ function renderGames(currentGames){
         //Label
         const labelCell = document.createElement('td');
         labelCell.textContent = game.name;
+        labelCell.title = "Name of the Game";
 
         const failCountCell = document.createElement('td');
         failCountCell.textContent = game.failCount;
+        failCountCell.title = "The number of fails when completing the Game";
 
         const statusCell = document.createElement('td');
         statusCell.classList.add("status", game.status.toLowerCase());
+        statusCell.title = "The current status of the Game";
 
         row.append(labelCell, failCountCell, statusCell);
         list.appendChild(row);
@@ -78,16 +81,20 @@ function renderGames(currentGames){
 
                 const attemptCell = document.createElement("td");
                 attemptCell.textContent = tryEntry.attempt;
+                attemptCell.title = "Attempt Number";
 
                 const streakCell = document.createElement("td");
                 streakCell.textContent = `${tryEntry.streak}/${game.neededWins}`;
+                streakCell.title = "Completion Progress of this try";
 
                 const resultCell = document.createElement("td");
                 resultCell.classList.add("result", tryEntry.result.toLowerCase());
+                resultCell.title = "Result of the try";
 
                 const failureReasonCell = document.createElement("td");
                 failureReasonCell.classList.add("failureReason");
                 failureReasonCell.textContent = tryEntry.failureReason;
+                failureReasonCell.title = "The failure reason of the try";
 
                 tryRow.append(attemptCell, streakCell, resultCell, failureReasonCell);
                 tryList.appendChild(tryRow);

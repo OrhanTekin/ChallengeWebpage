@@ -137,7 +137,7 @@ h1 {
 
 .list{
   font-size: 2rem;
-  padding: 1rem 2rem;
+  padding: 1rem 4rem;
 }
 
 
@@ -183,7 +183,7 @@ h1 {
 
 #stats-tries-table,
 #stats-table {
-  width: 700px;
+  width: 1000px;
   border-collapse: collapse;
 }
 
@@ -196,7 +196,7 @@ h1 {
 
 #stats-tries-table th,
 #stats-table th {
-  font-size: 2rem;
+  font-size: 3rem;
   color: var(--primary-color);
   text-shadow:
     0 0 10px var(--primary-color),
@@ -204,6 +204,12 @@ h1 {
     0 0 40px rgba(41, 206, 247, 0.6);
   font-weight: 200;
   animation: glowPulse 2.5s ease-in-out infinite alternate;
+}
+
+
+#stats-tries-table td,
+#stats-table td{
+  font-size: 2rem;
 }
 
 #stats-tries-table tr:hover,
@@ -221,9 +227,9 @@ h1 {
   transition: all 0.5s ease;
 }
 
-
 .failureReason {
   word-break: break-word;
+  font-size: 1rem !important;
 }
 
 
@@ -266,9 +272,9 @@ h1 {
   background-size: 32px 32px;
 }
 
-.result.ongoing {
+.result.failed {
   width: 60px;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='40' height='40'><circle cx='12' cy='12' r='11' fill='%23ffa726'/><path d='M17 8l2 2-2 2M7 16l-2-2 2-2M19 10a7 7 0 0 0-12.9-3M5 14a7 7 0 0 0 12.9 3' stroke='%23ffffff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='12' cy='12' r='11' fill='%23f44336'/><path d='M8 8l8 8M16 8l-8 8' stroke='%23ffffff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 32px 32px;
