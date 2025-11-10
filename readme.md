@@ -14,6 +14,19 @@ npm run dev
 
 
 todo home:
-1. Home Zeichen verbessern mit mehr Farben + Wind?
+- Home Zeichen verbessern mit mehr Farben + Wind?
 
 
+
+How to deploy Website:
+- Push changes to git -> Render will automatically deploy -> Go to Render for the website link
+    -> Note: If your site is not visited for 10-15 min, it basically goes offline
+
+Fix with: 
+- Go to UptimeRobot -> Login
+- New -> Paste Link -> Deselect Email Notifications -> 5 Min Interval -> Create Monitor
+
+
+When you start the Win Challenge: 
+1. Type something here and push to git repo
+2. Create Monitor with UptimeRobot (or just "Resume Monitor")
